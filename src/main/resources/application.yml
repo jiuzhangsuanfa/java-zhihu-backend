@@ -1,0 +1,25 @@
+
+server:
+  port: 8082
+
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/zhihu?characterEncoding=utf8&characterSetResults=utf8&autoReconnect=true&failOverReadOnly=false
+    username: root
+    driver-class-name: com.mysql.jdbc.Driver
+
+keycloak:
+  realm: application
+  resource: zhihu
+  auth-server-url: http://localhost:8080/auth
+#  bearer-only: true
+  use-resource-role-mappings: false
+  cors: true
+  public-client: true
+  security-constraints:
+    - authRoles:
+        - user
+      securityCollections:
+        - name: god
+          patterns:
+            - /user/*
