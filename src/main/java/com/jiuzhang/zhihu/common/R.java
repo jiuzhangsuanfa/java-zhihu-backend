@@ -42,6 +42,9 @@ public class R<T>  implements Serializable {
         return new R(code, (Object)null, msg);
     }
 
+    public static <T> R<T> data(T data) {
+        return new R(ResultCode.SUCCESS, data, "查询成功");
+    }
 
     public String toString() {
         return "R(code=" + this.getCode() + ", success=" + this.isSuccess() + ", data=" + this.getData() + ", msg=" + this.getMsg() + ")";

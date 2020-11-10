@@ -62,19 +62,18 @@ public class CodeGenerator {
             }
         };
 
-        // 如果模板引擎是
-        String templatePathDTO = "_templates/entityDTO.java.vm"; // C:\\codegen\\templates\\mapper.java.vm";
-
         // 自定义输出配置
         List<FileOutConfig> focList = new ArrayList<>();
 
         // 自定义配置会被优先输出
+        // 如果模板引擎是
+        String templatePathDTO = "_templates/entityDTO.java.vm";
         focList.add(new FileOutConfig(templatePathDTO) {
             @Override
             public String outputFile(TableInfo tableInfo) {
                 // 自定义输出文件名 ， 如果你 Entity 设置了前后缀、此处注意 xml 的名称会跟着发生变化！！
-                return projectPath + "/src/main/java/entity/dto/" + pc.getModuleName()
-                        + "/" + tableInfo.getEntityName() + StringPool.DOT_JAVA;
+                return projectPath + "/src/main/java/com/jiuzhang/zhihu/entity/dto/" + pc.getModuleName()
+                        + "/" + tableInfo.getEntityName() + "DTO" + StringPool.DOT_JAVA;
             }
         });
 
@@ -83,8 +82,8 @@ public class CodeGenerator {
             @Override
             public String outputFile(TableInfo tableInfo) {
                 // 自定义输出文件名 ， 如果你 Entity 设置了前后缀、此处注意 xml 的名称会跟着发生变化！！
-                return projectPath + "/src/main/java/entity/vo/" + pc.getModuleName()
-                        + "/" + tableInfo.getEntityName() + StringPool.DOT_JAVA;
+                return projectPath + "/src/main/java/com/jiuzhang/zhihu/entity/vo/" + pc.getModuleName()
+                        + "/" + tableInfo.getEntityName() + "VO" + StringPool.DOT_JAVA;
             }
         });
 
@@ -109,7 +108,8 @@ public class CodeGenerator {
         strategy.setEntityLombokModel(true);
         strategy.setRestControllerStyle(true);
         // 公共父类
-        strategy.setSuperControllerClass("BaseController");
+        strategy.setSuperControllerClass("com.jiuzhang.zhihu.common.BaseController");
+//        strategy.setSuperControllerP
         // 写于父类中的公共字段
         strategy.setSuperEntityColumns("id");
         strategy.setInclude("question", "answer", "vote");
@@ -134,17 +134,4 @@ public class CodeGenerator {
         generator.execute();
     }
 
-//    public static String scanner(String tip) {
-//        Scanner scanner = new Scanner(System.in);
-//        StringBuilder help = new StringBuilder();
-//        help.append("请输入" + tip + "：");
-//        System.out.println(help.toString());
-//        if (scanner.hasNext()) {
-//            String ipt = scanner.next();
-//            if (StringUtils.isNotBlank(ipt)) {
-//                return ipt;
-//            }
-//        }
-//        throw new MybatisPlusException("请输入正确的" + tip + "！");
-//    }
 }

@@ -1,4 +1,4 @@
-package com.jiuzhang.zhihu.dao;
+package com.jiuzhang.zhihu.common;
 
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionTemplate;
@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @author zkn
  *
  */
-
 public abstract class AbstractDao extends SqlSessionDaoSupport{
 
 	/**
@@ -18,7 +17,6 @@ public abstract class AbstractDao extends SqlSessionDaoSupport{
 	 */
 	@Autowired
     public void setSqlSessionFactory(SqlSessionFactory sqlSessionFactory){
-    	
         super.setSqlSessionFactory(sqlSessionFactory);
     }
 	
