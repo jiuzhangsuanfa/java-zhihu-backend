@@ -16,34 +16,35 @@
  */
 package $!{package.Controller};
 
-import io.swagger.annotations.Api;
 ##import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
+##import io.swagger.annotations.Api;
 ##import io.swagger.annotations.ApiOperation;
 ##import io.swagger.annotations.ApiParam;
 import lombok.AllArgsConstructor;
-import javax.validation.Valid;
+##import javax.validation.Valid;
+
+import com.jiuzhang.zhihu.common.support.Condition;
+import com.jiuzhang.zhihu.common.support.Query;
 import com.jiuzhang.zhihu.common.R;
-##import org.springblade.core.mp.support.Condition;
-import com.jiuzhang.zhihu.common.Query;
-import org.springblade.core.tool.utils.Func;
+import com.jiuzhang.zhihu.common.Func;
 import org.springframework.web.bind.annotation.*;
 #if($!{superEntityClass})
 import org.springframework.web.bind.annotation.RequestParam;
 #end
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import $!{package.Entity}.$!{entity};
-#set($voPackage=$package.Entity.replace("entity","vo"))
+#set($voPackage=$package.Entity +".vo")
 import $!{voPackage}.$!{entity}VO;
 #set($wrapperPackage=$package.Entity.replace("entity","wrapper"))
 #if($!{cfg.hasWrapper})
 import $!{wrapperPackage}.$!{entity}Wrapper;
 #end
 import $!{package.Service}.$!{table.serviceName};
-#if($!{superControllerClassPackage})
-import $!{superControllerClassPackage};
-#end
-#if(!$!{superEntityClass})
-#end
+###if($!{superControllerClassPackage})
+##import $!{superControllerClassPackage};
+###end
+###if(!$!{superEntityClass})
+###end
 
 /**
  * $!{table.comment} 控制器
@@ -54,9 +55,9 @@ import $!{superControllerClassPackage};
 @RestController
 @AllArgsConstructor
 @RequestMapping("$!{cfg.serviceName}/$!{cfg.entityKey}")
-@Api(value = "$!{table.comment}", tags = "$!{table.comment}接口")
+##@Api(value = "$!{table.comment}", tags = "$!{table.comment}接口")
 #if($!{superControllerClass})
-public class $!{table.controllerName} extends $!{superControllerClass} {
+public class $!{table.controllerName} {
 #else
 public class $!{table.controllerName} {
 #end
@@ -102,8 +103,8 @@ public class $!{table.controllerName} {
 	 * 分页 $!{table.comment}
 	 */
 	@GetMapping("/list")
-	@ApiOperationSupport(order = 2)
-	@ApiOperation(value = "分页", notes = "传入$!{table.entityPath}")
+##	@ApiOperationSupport(order = 2)
+##	@ApiOperation(value = "分页", notes = "传入$!{table.entityPath}")
 	public R<IPage<$!{entity}>> list($!{entity} $!{table.entityPath}, Query query) {
 		IPage<$!{entity}> pages = $!{table.entityPath}Service.page(Condition.getPage(query), Condition.getQueryWrapper($!{table.entityPath}));
 		return R.data(pages);
@@ -114,8 +115,8 @@ public class $!{table.controllerName} {
 	 * 自定义分页 $!{table.comment}
 	 */
 	@GetMapping("/page")
-	@ApiOperationSupport(order = 3)
-	@ApiOperation(value = "分页", notes = "传入$!{table.entityPath}")
+##	@ApiOperationSupport(order = 3)
+##	@ApiOperation(value = "分页", notes = "传入$!{table.entityPath}")
 	public R<IPage<$!{entity}VO>> page($!{entity}VO $!{table.entityPath}, Query query) {
 		IPage<$!{entity}VO> pages = $!{table.entityPath}Service.select$!{entity}Page(Condition.getPage(query), $!{table.entityPath});
 		return R.data(pages);
@@ -125,9 +126,9 @@ public class $!{table.controllerName} {
 	 * 新增 $!{table.comment}
 	 */
 	@PostMapping("/save")
-	@ApiOperationSupport(order = 4)
-	@ApiOperation(value = "新增", notes = "传入$!{table.entityPath}")
-	public R save(@Valid @RequestBody $!{entity} $!{table.entityPath}) {
+##	@ApiOperationSupport(order = 4)
+##	@ApiOperation(value = "新增", notes = "传入$!{table.entityPath}")
+	public R save(@RequestBody $!{entity} $!{table.entityPath}) {
 		return R.status($!{table.entityPath}Service.save($!{table.entityPath}));
 	}
 
@@ -135,9 +136,9 @@ public class $!{table.controllerName} {
 	 * 修改 $!{table.comment}
 	 */
 	@PostMapping("/update")
-	@ApiOperationSupport(order = 5)
-	@ApiOperation(value = "修改", notes = "传入$!{table.entityPath}")
-	public R update(@Valid @RequestBody $!{entity} $!{table.entityPath}) {
+##	@ApiOperationSupport(order = 5)
+##	@ApiOperation(value = "修改", notes = "传入$!{table.entityPath}")
+	public R update(@RequestBody $!{entity} $!{table.entityPath}) {
 		return R.status($!{table.entityPath}Service.updateById($!{table.entityPath}));
 	}
 
@@ -145,9 +146,9 @@ public class $!{table.controllerName} {
 	 * 新增或修改 $!{table.comment}
 	 */
 	@PostMapping("/submit")
-	@ApiOperationSupport(order = 6)
-	@ApiOperation(value = "新增或修改", notes = "传入$!{table.entityPath}")
-	public R submit(@Valid @RequestBody $!{entity} $!{table.entityPath}) {
+##	@ApiOperationSupport(order = 6)
+##	@ApiOperation(value = "新增或修改", notes = "传入$!{table.entityPath}")
+	public R submit(@RequestBody $!{entity} $!{table.entityPath}) {
 		return R.status($!{table.entityPath}Service.saveOrUpdate($!{table.entityPath}));
 	}
 
@@ -157,8 +158,8 @@ public class $!{table.controllerName} {
 	 * 删除 $!{table.comment}
 	 */
 	@PostMapping("/remove")
-	@ApiOperationSupport(order = 7)
-	@ApiOperation(value = "逻辑删除", notes = "传入ids")
+##	@ApiOperationSupport(order = 7)
+##	@ApiOperation(value = "逻辑删除", notes = "传入ids")
 	public R remove(@ApiParam(value = "主键集合", required = true) @RequestParam String ids) {
 		return R.status($!{table.entityPath}Service.deleteLogic(Func.toIntList(ids)));
 	}
@@ -169,9 +170,9 @@ public class $!{table.controllerName} {
 	 * 删除 $!{table.comment}
 	 */
 	@PostMapping("/remove")
-	@ApiOperationSupport(order = 8)
-	@ApiOperation(value = "删除", notes = "传入ids")
-	public R remove(@ApiParam(value = "主键集合", required = true) @RequestParam String ids) {
+##	@ApiOperationSupport(order = 8)
+##	@ApiOperation(value = "删除", notes = "传入ids")
+	public R remove(@RequestParam String ids) {
 		return R.status($!{table.entityPath}Service.removeByIds(Func.toLongList(ids)));
 	}
 

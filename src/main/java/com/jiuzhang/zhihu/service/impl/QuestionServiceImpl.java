@@ -17,7 +17,7 @@
 package com.jiuzhang.zhihu.service.impl;
 
 import com.jiuzhang.zhihu.entity.Question;
-import com.jiuzhang.zhihu.vo.QuestionVO;
+import com.jiuzhang.zhihu.entity.vo.QuestionVO;
 import com.jiuzhang.zhihu.mapper.QuestionMapper;
 import com.jiuzhang.zhihu.service.IQuestionService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -27,8 +27,8 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 /**
  *  服务实现类
  *
- * @author 九章算法
- * @since 2020-11-06
+ * @author 作者
+ * @since 2020-11-12
  */
 @Service
 public class QuestionServiceImpl extends ServiceImpl<QuestionMapper, Question> implements IQuestionService {

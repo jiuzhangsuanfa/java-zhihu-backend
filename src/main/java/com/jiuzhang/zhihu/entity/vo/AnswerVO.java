@@ -14,7 +14,7 @@
  *  this software without specific prior written permission.
  *  Author: Chill 庄骞 (smallchill@163.com)
  */
-package com.jiuzhang.zhihu.vo;
+package com.jiuzhang.zhihu.entity.vo;
 
 import com.jiuzhang.zhihu.entity.Answer;
 import lombok.Data;
@@ -23,8 +23,8 @@ import lombok.EqualsAndHashCode;
 /**
  * 视图实体类
  *
- * @author 九章算法
- * @since 2020-11-06
+ * @author 作者
+ * @since 2020-11-22
  */
 @Data
 @EqualsAndHashCode(callSuper = true)

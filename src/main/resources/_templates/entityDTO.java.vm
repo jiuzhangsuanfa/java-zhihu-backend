@@ -14,8 +14,9 @@
  *  this software without specific prior written permission.
  *  Author: Chill 庄骞 (smallchill@163.com)
  */
-#set($dtoPackage=$package.Entity.replace("entity","dto"))
-package $!{dtoPackage};
+###set($dtoPackage=$package.Entity.replace("entity","dto"))
+##package $!{dtoPackage};
+package $!{package.Entity}.dto;
 
 import $!{package.Entity}.$!{entity};
 #if($!{entityLombokModel})

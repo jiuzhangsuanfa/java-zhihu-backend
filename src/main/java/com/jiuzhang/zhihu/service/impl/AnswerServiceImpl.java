@@ -16,19 +16,19 @@
  */
 package com.jiuzhang.zhihu.service.impl;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.jiuzhang.zhihu.entity.Answer;
-import com.jiuzhang.zhihu.vo.AnswerVO;
+import com.jiuzhang.zhihu.entity.vo.AnswerVO;
 import com.jiuzhang.zhihu.mapper.AnswerMapper;
 import com.jiuzhang.zhihu.service.IAnswerService;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
-import com.baomidou.mybatisplus.core.metadata.IPage;
 
 /**
  *  服务实现类
  *
- * @author 九章算法
- * @since 2020-11-06
+ * @author 作者
+ * @since 2020-11-12
  */
 @Service
 public class AnswerServiceImpl extends ServiceImpl<AnswerMapper, Answer> implements IAnswerService {

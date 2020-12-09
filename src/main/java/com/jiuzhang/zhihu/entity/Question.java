@@ -20,20 +20,28 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import java.time.LocalDateTime;
 import com.baomidou.mybatisplus.annotation.TableId;
 import java.io.Serializable;
+
+import com.baomidou.mybatisplus.annotation.TableLogic;
+import com.baomidou.mybatisplus.annotation.Version;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
  * 实体类
  *
- * @author 九章算法
- * @since 2020-11-06
+ * @author 作者
+ * @since 2020-11-12
  */
 @Data
 public class Question implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
+	/**
+	 * id
+	 */
+	@TableId(value="id", type = IdType.ASSIGN_ID)
+	private Long id;
 	/**
 	* 问题标题
 	*/
@@ -45,11 +53,19 @@ public class Question implements Serializable {
 	/**
 	* 发布用户ID
 	*/
-	private Long userId;
-	private String createPerson;
-	private LocalDateTime createTime;
-	private String updatePerson;
-	private LocalDateTime updateTime;
+	private String userId;
+	/**
+	 * 逻辑删除 0-未删除 1-已删除
+	 */
+	@TableLogic
+	private Boolean isDeleted;
 
+	private String createPerson;
+
+	private LocalDateTime createTime;
+
+	private String updatePerson;
+
+	private LocalDateTime updateTime;
 
 }

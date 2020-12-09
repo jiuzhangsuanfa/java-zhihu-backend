@@ -7,9 +7,10 @@
         <result column="id" property="id"/>
         <result column="content" property="content"/>
         <result column="user_id" property="userId"/>
-        <result column="positive_count" property="positiveCount"/>
-        <result column="negative_count" property="negativeCount"/>
-        <result column="folded" property="folded"/>
+        <result column="upvote_count" property="upvoteCount"/>
+        <result column="downvote_count" property="downvoteCount"/>
+        <result column="ranking" property="ranking"/>
+        <result column="is_deleted" property="isDeleted"/>
         <result column="create_person" property="createPerson"/>
         <result column="create_time" property="createTime"/>
         <result column="update_person" property="updatePerson"/>

@@ -17,9 +17,12 @@
 package com.jiuzhang.zhihu.common;
 
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
-import org.springblade.core.tool.jackson.JsonUtil;
+import com.jiuzhang.zhihu.util.*;
+import com.jiuzhang.zhihu.util.datatime.ConcurrentDateFormat;
+import com.jiuzhang.zhihu.util.datatime.DateTimeUtil;
+import com.jiuzhang.zhihu.util.datatime.DateUtil;
+import org.apache.commons.codec.Charsets;
 import org.springframework.beans.BeansException;
 import org.springframework.core.MethodParameter;
 import org.springframework.core.annotation.AnnotatedElementUtils;
@@ -29,8 +32,6 @@ import org.springframework.util.PatternMatchUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.method.HandlerMethod;
 
-import java.io.Closeable;
-import java.io.File;
 import java.io.InputStream;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedElement;
@@ -47,6 +48,9 @@ import java.time.temporal.Temporal;
 import java.time.temporal.TemporalAccessor;
 import java.util.*;
 import java.util.function.Supplier;
+
+import static org.apache.commons.lang3.math.NumberUtils.toInt;
+import static org.apache.commons.lang3.math.NumberUtils.toLong;
 
 /**
  * 工具包集合，工具类快捷方式
@@ -149,9 +153,9 @@ public class Func {
 	 * @param str 字符串
 	 * @return {String}
 	 */
-	public static String firstCharToLower(String str) {
-		return StringUtil.firstCharToLower(str);
-	}
+//	public static String firstCharToLower(String str) {
+//		return StringUtil.firstCharToLower(str);
+//	}
 
 	/**
 	 * 首字母变大写
@@ -159,9 +163,9 @@ public class Func {
 	 * @param str 字符串
 	 * @return {String}
 	 */
-	public static String firstCharToUpper(String str) {
-		return StringUtil.firstCharToUpper(str);
-	}
+//	public static String firstCharToUpper(String str) {
+//		return StringUtil.firstCharToUpper(str);
+//	}
 
 	/**
 	 * 判断是否为空字符串
@@ -346,7 +350,7 @@ public class Func {
 	 * @param o2 second Object to compare
 	 * @return whether the given objects are equal
 	 * @see Object#equals(Object)
-	 * @see Arrays#equals
+	 * @see java.util.Arrays#equals
 	 */
 	public static boolean equalsSafe(@Nullable Object o1, @Nullable Object o2) {
 		return ObjectUtil.nullSafeEquals(o1, o2);
@@ -472,9 +476,9 @@ public class Func {
 	 * @return the int represented by the string, or <code>zero</code> if
 	 * conversion fails
 	 */
-	public static int toInt(final Object str) {
-		return NumberUtil.toInt(String.valueOf(str));
-	}
+//	public static int toInt(final Object str) {
+//		return NumberUtil.toInt(String.valueOf(str));
+//	}
 
 	/**
 	 * 字符串转 int，为空则返回默认值
@@ -490,7 +494,8 @@ public class Func {
 	 * @return the int represented by the string, or the default if conversion fails
 	 */
 	public static int toInt(@Nullable final Object str, final int defaultValue) {
-		return NumberUtil.toInt(String.valueOf(str), defaultValue);
+//		return NumberUtil.toInt(String.valueOf(str), defaultValue);
+		return 0;
 	}
 
 	/**
@@ -506,9 +511,9 @@ public class Func {
 	 * @return the long represented by the string, or <code>0</code> if
 	 * conversion fails
 	 */
-	public static long toLong(final Object str) {
-		return NumberUtil.toLong(String.valueOf(str));
-	}
+//	public static long toLong(final Object str) {
+//		return NumberUtil.toLong(String.valueOf(str));
+//	}
 
 	/**
 	 * 字符串转 long，为空则返回默认值
@@ -523,9 +528,9 @@ public class Func {
 	 * @param defaultValue the default value
 	 * @return the long represented by the string, or the default if conversion fails
 	 */
-	public static long toLong(@Nullable final Object str, final long defaultValue) {
-		return NumberUtil.toLong(String.valueOf(str), defaultValue);
-	}
+//	public static long toLong(@Nullable final Object str, final long defaultValue) {
+//		return NumberUtil.toLong(String.valueOf(str), defaultValue);
+//	}
 
 	/**
 	 * <p>Convert a <code>String</code> to an <code>Double</code>, returning a
@@ -542,9 +547,9 @@ public class Func {
 	 * @param value the string to convert, may be null
 	 * @return the int represented by the string, or the default if conversion fails
 	 */
-	public static Double toDouble(Object value) {
-		return toDouble(String.valueOf(value), -1.00);
-	}
+//	public static Double toDouble(Object value) {
+//		return toDouble(String.valueOf(value), -1.00);
+//	}
 
 	/**
 	 * <p>Convert a <code>String</code> to an <code>Double</code>, returning a
@@ -562,9 +567,9 @@ public class Func {
 	 * @param defaultValue the default value
 	 * @return the int represented by the string, or the default if conversion fails
 	 */
-	public static Double toDouble(Object value, Double defaultValue) {
-		return NumberUtil.toDouble(String.valueOf(value), defaultValue);
-	}
+//	public static Double toDouble(Object value, Double defaultValue) {
+//		return NumberUtil.toDouble(String.valueOf(value), defaultValue);
+//	}
 
 	/**
 	 * <p>Convert a <code>String</code> to an <code>Float</code>, returning a
@@ -581,9 +586,9 @@ public class Func {
 	 * @param value the string to convert, may be null
 	 * @return the int represented by the string, or the default if conversion fails
 	 */
-	public static Float toFloat(Object value) {
-		return toFloat(String.valueOf(value), -1.0f);
-	}
+//	public static Float toFloat(Object value) {
+//		return toFloat(String.valueOf(value), -1.0f);
+//	}
 
 	/**
 	 * <p>Convert a <code>String</code> to an <code>Float</code>, returning a
@@ -601,9 +606,9 @@ public class Func {
 	 * @param defaultValue the default value
 	 * @return the int represented by the string, or the default if conversion fails
 	 */
-	public static Float toFloat(Object value, Float defaultValue) {
-		return NumberUtil.toFloat(String.valueOf(value), defaultValue);
-	}
+//	public static Float toFloat(Object value, Float defaultValue) {
+//		return NumberUtil.toFloat(String.valueOf(value), defaultValue);
+//	}
 
 	/**
 	 * <p>Convert a <code>String</code> to an <code>Boolean</code>, returning a
@@ -802,9 +807,9 @@ public class Func {
 	 * @param num 数字
 	 * @return 短字符串
 	 */
-	public static String to62String(long num) {
-		return NumberUtil.to62String(num);
-	}
+//	public static String to62String(long num) {
+//		return NumberUtil.to62String(num);
+//	}
 
 	/**
 	 * 将集合拼接成字符串，默认使用`,`拼接
@@ -855,9 +860,9 @@ public class Func {
 	 * @param separator 分隔符字符
 	 * @return 切分后的集合
 	 */
-	public static List<String> split(CharSequence str, char separator) {
-		return StringUtil.split(str, separator, -1);
-	}
+//	public static List<String> split(CharSequence str, char separator) {
+//		return StringUtil.split(str, separator, -1);
+//	}
 
 	/**
 	 * 切分字符串，去除切分后每个元素两边的空白符，去除空白项
@@ -866,9 +871,9 @@ public class Func {
 	 * @param separator 分隔符字符
 	 * @return 切分后的集合
 	 */
-	public static List<String> splitTrim(CharSequence str, char separator) {
-		return StringUtil.splitTrim(str, separator);
-	}
+//	public static List<String> splitTrim(CharSequence str, char separator) {
+//		return StringUtil.splitTrim(str, separator);
+//	}
 
 	/**
 	 * 切分字符串，去除切分后每个元素两边的空白符，去除空白项
@@ -877,9 +882,9 @@ public class Func {
 	 * @param separator 分隔符字符
 	 * @return 切分后的集合
 	 */
-	public static List<String> splitTrim(CharSequence str, CharSequence separator) {
-		return StringUtil.splitTrim(str, separator);
-	}
+//	public static List<String> splitTrim(CharSequence str, CharSequence separator) {
+//		return StringUtil.splitTrim(str, separator);
+//	}
 
 	/**
 	 * 分割 字符串
@@ -958,9 +963,9 @@ public class Func {
 	 * @param count 字符长度
 	 * @return 随机数
 	 */
-	public static String random(int count) {
-		return StringUtil.random(count);
-	}
+//	public static String random(int count) {
+//		return StringUtil.random(count);
+//	}
 
 	/**
 	 * 随机数生成
@@ -969,9 +974,9 @@ public class Func {
 	 * @param randomType 随机数类别
 	 * @return 随机数
 	 */
-	public static String random(int count, RandomType randomType) {
-		return StringUtil.random(count, randomType);
-	}
+//	public static String random(int count, RandomType randomType) {
+//		return StringUtil.random(count, randomType);
+//	}
 
 	/**
 	 * 字符串序列化成 md5
@@ -979,9 +984,9 @@ public class Func {
 	 * @param data Data to digest
 	 * @return MD5 digest as a hex string
 	 */
-	public static String md5Hex(final String data) {
-		return DigestUtil.md5Hex(data);
-	}
+//	public static String md5Hex(final String data) {
+//		return DigestUtil.md5Hex(data);
+//	}
 
 	/**
 	 * 数组序列化成 md5
@@ -989,9 +994,9 @@ public class Func {
 	 * @param bytes the bytes to calculate the digest over
 	 * @return md5 digest string
 	 */
-	public static String md5Hex(final byte[] bytes) {
-		return DigestUtil.md5Hex(bytes);
-	}
+//	public static String md5Hex(final byte[] bytes) {
+//		return DigestUtil.md5Hex(bytes);
+//	}
 
 
 	/**
@@ -1000,9 +1005,9 @@ public class Func {
 	 * @param data Data to digest
 	 * @return digest as a hex string
 	 */
-	public static String sha1Hex(String data) {
-		return DigestUtil.sha1Hex(data);
-	}
+//	public static String sha1Hex(String data) {
+//		return DigestUtil.sha1Hex(data);
+//	}
 
 	/**
 	 * sha1Hex
@@ -1010,9 +1015,9 @@ public class Func {
 	 * @param bytes Data to digest
 	 * @return digest as a hex string
 	 */
-	public static String sha1Hex(final byte[] bytes) {
-		return DigestUtil.sha1Hex(bytes);
-	}
+//	public static String sha1Hex(final byte[] bytes) {
+//		return DigestUtil.sha1Hex(bytes);
+//	}
 
 	/**
 	 * SHA224Hex
@@ -1020,9 +1025,9 @@ public class Func {
 	 * @param data Data to digest
 	 * @return digest as a hex string
 	 */
-	public static String sha224Hex(String data) {
-		return DigestUtil.sha224Hex(data);
-	}
+//	public static String sha224Hex(String data) {
+//		return DigestUtil.sha224Hex(data);
+//	}
 
 	/**
 	 * SHA224Hex
@@ -1030,9 +1035,9 @@ public class Func {
 	 * @param bytes Data to digest
 	 * @return digest as a hex string
 	 */
-	public static String sha224Hex(final byte[] bytes) {
-		return DigestUtil.sha224Hex(bytes);
-	}
+//	public static String sha224Hex(final byte[] bytes) {
+//		return DigestUtil.sha224Hex(bytes);
+//	}
 
 	/**
 	 * sha256Hex
@@ -1040,9 +1045,9 @@ public class Func {
 	 * @param data Data to digest
 	 * @return digest as a hex string
 	 */
-	public static String sha256Hex(String data) {
-		return DigestUtil.sha256Hex(data);
-	}
+//	public static String sha256Hex(String data) {
+//		return DigestUtil.sha256Hex(data);
+//	}
 
 	/**
 	 * sha256Hex
@@ -1050,9 +1055,9 @@ public class Func {
 	 * @param bytes Data to digest
 	 * @return digest as a hex string
 	 */
-	public static String sha256Hex(final byte[] bytes) {
-		return DigestUtil.sha256Hex(bytes);
-	}
+//	public static String sha256Hex(final byte[] bytes) {
+//		return DigestUtil.sha256Hex(bytes);
+//	}
 
 	/**
 	 * sha384Hex
@@ -1060,9 +1065,9 @@ public class Func {
 	 * @param data Data to digest
 	 * @return digest as a hex string
 	 */
-	public static String sha384Hex(String data) {
-		return DigestUtil.sha384Hex(data);
-	}
+//	public static String sha384Hex(String data) {
+//		return DigestUtil.sha384Hex(data);
+//	}
 
 	/**
 	 * sha384Hex
@@ -1070,9 +1075,9 @@ public class Func {
 	 * @param bytes Data to digest
 	 * @return digest as a hex string
 	 */
-	public static String sha384Hex(final byte[] bytes) {
-		return DigestUtil.sha384Hex(bytes);
-	}
+//	public static String sha384Hex(final byte[] bytes) {
+//		return DigestUtil.sha384Hex(bytes);
+//	}
 
 	/**
 	 * sha512Hex
@@ -1080,9 +1085,9 @@ public class Func {
 	 * @param data Data to digest
 	 * @return digest as a hex string
 	 */
-	public static String sha512Hex(String data) {
-		return DigestUtil.sha512Hex(data);
-	}
+//	public static String sha512Hex(String data) {
+//		return DigestUtil.sha512Hex(data);
+//	}
 
 	/**
 	 * sha512Hex
@@ -1090,9 +1095,9 @@ public class Func {
 	 * @param bytes Data to digest
 	 * @return digest as a hex string
 	 */
-	public static String sha512Hex(final byte[] bytes) {
-		return DigestUtil.sha512Hex(bytes);
-	}
+//	public static String sha512Hex(final byte[] bytes) {
+//		return DigestUtil.sha512Hex(bytes);
+//	}
 
 	/**
 	 * hmacMd5 Hex
@@ -1101,9 +1106,9 @@ public class Func {
 	 * @param key  key
 	 * @return digest as a hex string
 	 */
-	public static String hmacMd5Hex(String data, String key) {
-		return DigestUtil.hmacMd5Hex(data, key);
-	}
+//	public static String hmacMd5Hex(String data, String key) {
+//		return DigestUtil.hmacMd5Hex(data, key);
+//	}
 
 	/**
 	 * hmacMd5 Hex
@@ -1112,9 +1117,9 @@ public class Func {
 	 * @param key   key
 	 * @return digest as a hex string
 	 */
-	public static String hmacMd5Hex(final byte[] bytes, String key) {
-		return DigestUtil.hmacMd5Hex(bytes, key);
-	}
+//	public static String hmacMd5Hex(final byte[] bytes, String key) {
+//		return DigestUtil.hmacMd5Hex(bytes, key);
+//	}
 
 	/**
 	 * hmacSha1 Hex
@@ -1123,9 +1128,9 @@ public class Func {
 	 * @param key  key
 	 * @return digest as a hex string
 	 */
-	public static String hmacSha1Hex(String data, String key) {
-		return DigestUtil.hmacSha1Hex(data, key);
-	}
+//	public static String hmacSha1Hex(String data, String key) {
+//		return DigestUtil.hmacSha1Hex(data, key);
+//	}
 
 	/**
 	 * hmacSha1 Hex
@@ -1134,9 +1139,9 @@ public class Func {
 	 * @param key   key
 	 * @return digest as a hex string
 	 */
-	public static String hmacSha1Hex(final byte[] bytes, String key) {
-		return DigestUtil.hmacSha1Hex(bytes, key);
-	}
+//	public static String hmacSha1Hex(final byte[] bytes, String key) {
+//		return DigestUtil.hmacSha1Hex(bytes, key);
+//	}
 
 	/**
 	 * hmacSha224 Hex
@@ -1145,9 +1150,9 @@ public class Func {
 	 * @param key  key
 	 * @return digest as a hex string
 	 */
-	public static String hmacSha224Hex(String data, String key) {
-		return DigestUtil.hmacSha224Hex(data, key);
-	}
+//	public static String hmacSha224Hex(String data, String key) {
+//		return DigestUtil.hmacSha224Hex(data, key);
+//	}
 
 	/**
 	 * hmacSha224 Hex
@@ -1156,9 +1161,9 @@ public class Func {
 	 * @param key   key
 	 * @return digest as a hex string
 	 */
-	public static String hmacSha224Hex(final byte[] bytes, String key) {
-		return DigestUtil.hmacSha224Hex(bytes, key);
-	}
+//	public static String hmacSha224Hex(final byte[] bytes, String key) {
+//		return DigestUtil.hmacSha224Hex(bytes, key);
+//	}
 
 	/**
 	 * hmacSha256 Hex
@@ -1167,9 +1172,9 @@ public class Func {
 	 * @param key  key
 	 * @return digest as a hex string
 	 */
-	public static String hmacSha256Hex(String data, String key) {
-		return DigestUtil.hmacSha256Hex(data, key);
-	}
+//	public static String hmacSha256Hex(String data, String key) {
+//		return DigestUtil.hmacSha256Hex(data, key);
+//	}
 
 	/**
 	 * hmacSha256 Hex
@@ -1178,9 +1183,9 @@ public class Func {
 	 * @param key   key
 	 * @return digest as a hex string
 	 */
-	public static String hmacSha256Hex(final byte[] bytes, String key) {
-		return DigestUtil.hmacSha256Hex(bytes, key);
-	}
+//	public static String hmacSha256Hex(final byte[] bytes, String key) {
+//		return DigestUtil.hmacSha256Hex(bytes, key);
+//	}
 
 	/**
 	 * hmacSha384 Hex
@@ -1189,9 +1194,9 @@ public class Func {
 	 * @param key  key
 	 * @return digest as a hex string
 	 */
-	public static String hmacSha384Hex(String data, String key) {
-		return DigestUtil.hmacSha384Hex(data, key);
-	}
+//	public static String hmacSha384Hex(String data, String key) {
+//		return DigestUtil.hmacSha384Hex(data, key);
+//	}
 
 	/**
 	 * hmacSha384 Hex
@@ -1200,9 +1205,9 @@ public class Func {
 	 * @param key   key
 	 * @return digest as a hex string
 	 */
-	public static String hmacSha384Hex(final byte[] bytes, String key) {
-		return DigestUtil.hmacSha384Hex(bytes, key);
-	}
+//	public static String hmacSha384Hex(final byte[] bytes, String key) {
+//		return DigestUtil.hmacSha384Hex(bytes, key);
+//	}
 
 	/**
 	 * hmacSha512 Hex
@@ -1211,9 +1216,9 @@ public class Func {
 	 * @param key  key
 	 * @return digest as a hex string
 	 */
-	public static String hmacSha512Hex(String data, String key) {
-		return DigestUtil.hmacSha512Hex(data, key);
-	}
+//	public static String hmacSha512Hex(String data, String key) {
+//		return DigestUtil.hmacSha512Hex(data, key);
+//	}
 
 	/**
 	 * hmacSha512 Hex
@@ -1222,9 +1227,9 @@ public class Func {
 	 * @param key   key
 	 * @return digest as a hex string
 	 */
-	public static String hmacSha512Hex(final byte[] bytes, String key) {
-		return DigestUtil.hmacSha512Hex(bytes, key);
-	}
+//	public static String hmacSha512Hex(final byte[] bytes, String key) {
+//		return DigestUtil.hmacSha512Hex(bytes, key);
+//	}
 
 	/**
 	 * byte 数组序列化成 hex
@@ -1232,9 +1237,9 @@ public class Func {
 	 * @param bytes bytes to encode
 	 * @return MD5 digest as a hex string
 	 */
-	public static String encodeHex(byte[] bytes) {
-		return DigestUtil.encodeHex(bytes);
-	}
+//	public static String encodeHex(byte[] bytes) {
+//		return DigestUtil.encodeHex(bytes);
+//	}
 
 	/**
 	 * 字符串反序列化成 hex
@@ -1242,9 +1247,9 @@ public class Func {
 	 * @param hexString String to decode
 	 * @return MD5 digest as a hex string
 	 */
-	public static byte[] decodeHex(final String hexString) {
-		return DigestUtil.decodeHex(hexString);
-	}
+//	public static byte[] decodeHex(final String hexString) {
+//		return DigestUtil.decodeHex(hexString);
+//	}
 
 	/**
 	 * Base64编码
@@ -1252,9 +1257,9 @@ public class Func {
 	 * @param value 字符串
 	 * @return {String}
 	 */
-	public static String encodeBase64(String value) {
-		return Base64Util.encode(value);
-	}
+//	public static String encodeBase64(String value) {
+//		return Base64Util.encode(value);
+//	}
 
 	/**
 	 * Base64编码
@@ -1263,9 +1268,9 @@ public class Func {
 	 * @param charset 字符集
 	 * @return {String}
 	 */
-	public static String encodeBase64(String value, Charset charset) {
-		return Base64Util.encode(value, charset);
-	}
+//	public static String encodeBase64(String value, Charset charset) {
+//		return Base64Util.encode(value, charset);
+//	}
 
 	/**
 	 * Base64编码为URL安全
@@ -1273,9 +1278,9 @@ public class Func {
 	 * @param value 字符串
 	 * @return {String}
 	 */
-	public static String encodeBase64UrlSafe(String value) {
-		return Base64Util.encodeUrlSafe(value);
-	}
+//	public static String encodeBase64UrlSafe(String value) {
+//		return Base64Util.encodeUrlSafe(value);
+//	}
 
 	/**
 	 * Base64编码为URL安全
@@ -1284,9 +1289,9 @@ public class Func {
 	 * @param charset 字符集
 	 * @return {String}
 	 */
-	public static String encodeBase64UrlSafe(String value, Charset charset) {
-		return Base64Util.encodeUrlSafe(value, charset);
-	}
+//	public static String encodeBase64UrlSafe(String value, Charset charset) {
+//		return Base64Util.encodeUrlSafe(value, charset);
+//	}
 
 	/**
 	 * Base64解码
@@ -1294,9 +1299,9 @@ public class Func {
 	 * @param value 字符串
 	 * @return {String}
 	 */
-	public static String decodeBase64(String value) {
-		return Base64Util.decode(value);
-	}
+//	public static String decodeBase64(String value) {
+//		return Base64Util.decode(value);
+//	}
 
 	/**
 	 * Base64解码
@@ -1305,9 +1310,9 @@ public class Func {
 	 * @param charset 字符集
 	 * @return {String}
 	 */
-	public static String decodeBase64(String value, Charset charset) {
-		return Base64Util.decode(value, charset);
-	}
+//	public static String decodeBase64(String value, Charset charset) {
+//		return Base64Util.decode(value, charset);
+//	}
 
 	/**
 	 * Base64URL安全解码
@@ -1315,9 +1320,9 @@ public class Func {
 	 * @param value 字符串
 	 * @return {String}
 	 */
-	public static String decodeBase64UrlSafe(String value) {
-		return Base64Util.decodeUrlSafe(value);
-	}
+//	public static String decodeBase64UrlSafe(String value) {
+//		return Base64Util.decodeUrlSafe(value);
+//	}
 
 	/**
 	 * Base64URL安全解码
@@ -1326,18 +1331,18 @@ public class Func {
 	 * @param charset 字符集
 	 * @return {String}
 	 */
-	public static String decodeBase64UrlSafe(String value, Charset charset) {
-		return Base64Util.decodeUrlSafe(value, charset);
-	}
+//	public static String decodeBase64UrlSafe(String value, Charset charset) {
+//		return Base64Util.decodeUrlSafe(value, charset);
+//	}
 
 	/**
 	 * 关闭 Closeable
 	 *
 	 * @param closeable 自动关闭
 	 */
-	public static void closeQuietly(@Nullable Closeable closeable) {
-		IoUtil.closeQuietly(closeable);
-	}
+//	public static void closeQuietly(@Nullable Closeable closeable) {
+//		IoUtil.closeQuietly(closeable);
+//	}
 
 	/**
 	 * InputStream to String utf-8
@@ -1346,9 +1351,9 @@ public class Func {
 	 * @return the requested String
 	 * @throws NullPointerException if the input is null
 	 */
-	public static String readToString(InputStream input) {
-		return IoUtil.readToString(input);
-	}
+//	public static String readToString(InputStream input) {
+//		return IoUtil.readToString(input);
+//	}
 
 	/**
 	 * InputStream to String
@@ -1358,9 +1363,9 @@ public class Func {
 	 * @return the requested String
 	 * @throws NullPointerException if the input is null
 	 */
-	public static String readToString(@Nullable InputStream input, Charset charset) {
-		return IoUtil.readToString(input, charset);
-	}
+//	public static String readToString(@Nullable InputStream input, Charset charset) {
+//		return IoUtil.readToString(input, charset);
+//	}
 
 	/**
 	 * InputStream to bytes 数组
@@ -1368,9 +1373,9 @@ public class Func {
 	 * @param input InputStream
 	 * @return the requested byte array
 	 */
-	public static byte[] readToByteArray(@Nullable InputStream input) {
-		return IoUtil.readToByteArray(input);
-	}
+//	public static byte[] readToByteArray(@Nullable InputStream input) {
+//		return IoUtil.readToByteArray(input);
+//	}
 
 	/**
 	 * 读取文件为字符串
@@ -1378,9 +1383,9 @@ public class Func {
 	 * @param file the file to read, must not be {@code null}
 	 * @return the file contents, never {@code null}
 	 */
-	public static String readToString(final File file) {
-		return FileUtil.readToString(file);
-	}
+//	public static String readToString(final File file) {
+//		return FileUtil.readToString(file);
+//	}
 
 	/**
 	 * 读取文件为字符串
@@ -1389,9 +1394,9 @@ public class Func {
 	 * @param encoding the encoding to use, {@code null} means platform default
 	 * @return the file contents, never {@code null}
 	 */
-	public static String readToString(File file, Charset encoding) {
-		return FileUtil.readToString(file, encoding);
-	}
+//	public static String readToString(File file, Charset encoding) {
+//		return FileUtil.readToString(file, encoding);
+//	}
 
 	/**
 	 * 读取文件为 byte 数组
@@ -1399,9 +1404,9 @@ public class Func {
 	 * @param file the file to read, must not be {@code null}
 	 * @return the file contents, never {@code null}
 	 */
-	public static byte[] readToByteArray(File file) {
-		return FileUtil.readToByteArray(file);
-	}
+//	public static byte[] readToByteArray(File file) {
+//		return FileUtil.readToByteArray(file);
+//	}
 
 	/**
 	 * 将对象序列化成json字符串
@@ -1507,9 +1512,9 @@ public class Func {
 	 * @param <T>           T 泛型标记
 	 * @return Bean
 	 */
-	public static <T> T readJson(byte[] bytes, TypeReference<?> typeReference) {
-		return JsonUtil.parse(bytes, typeReference);
-	}
+//	public static <T> T readJson(byte[] bytes, TypeReference<?> typeReference) {
+//		return JsonUtil.parse(bytes, typeReference);
+//	}
 
 	/**
 	 * 将json反序列化成对象
@@ -1519,9 +1524,9 @@ public class Func {
 	 * @param <T>           T 泛型标记
 	 * @return Bean
 	 */
-	public static <T> T readJson(String jsonString, TypeReference<?> typeReference) {
-		return JsonUtil.parse(jsonString, typeReference);
-	}
+//	public static <T> T readJson(String jsonString, TypeReference<?> typeReference) {
+//		return JsonUtil.parse(jsonString, typeReference);
+//	}
 
 	/**
 	 * 将json反序列化成对象
@@ -1531,9 +1536,9 @@ public class Func {
 	 * @param <T>           T 泛型标记
 	 * @return Bean
 	 */
-	public static <T> T readJson(InputStream in, TypeReference<?> typeReference) {
-		return JsonUtil.parse(in, typeReference);
-	}
+//	public static <T> T readJson(InputStream in, TypeReference<?> typeReference) {
+//		return JsonUtil.parse(in, typeReference);
+//	}
 
 	/**
 	 * url 编码
@@ -1541,9 +1546,9 @@ public class Func {
 	 * @param source the String to be encoded
 	 * @return the encoded String
 	 */
-	public static String urlEncode(String source) {
-		return UrlUtil.encode(source, Charsets.UTF_8);
-	}
+//	public static String urlEncode(String source) {
+//		return UrlUtil.encode(source, Charsets.UTF_8);
+//	}
 
 	/**
 	 * url 编码
@@ -1552,9 +1557,9 @@ public class Func {
 	 * @param charset the character encoding to encode to
 	 * @return the encoded String
 	 */
-	public static String urlEncode(String source, Charset charset) {
-		return UrlUtil.encode(source, charset);
-	}
+//	public static String urlEncode(String source, Charset charset) {
+//		return UrlUtil.encode(source, charset);
+//	}
 
 	/**
 	 * url 解码
@@ -1884,9 +1889,9 @@ public class Func {
 	 * @return 对象
 	 */
 	@SuppressWarnings("unchecked")
-	public static <T> T newInstance(Class<?> clazz) {
-		return (T) BeanUtil.instantiateClass(clazz);
-	}
+//	public static <T> T newInstance(Class<?> clazz) {
+//		return (T) BeanUtil.instantiateClass(clazz);
+//	}
 
 	/**
 	 * 实例化对象
@@ -1895,9 +1900,9 @@ public class Func {
 	 * @param <T>      泛型标记
 	 * @return 对象
 	 */
-	public static <T> T newInstance(String clazzStr) {
-		return BeanUtil.newInstance(clazzStr);
-	}
+//	public static <T> T newInstance(String clazzStr) {
+//		return BeanUtil.newInstance(clazzStr);
+//	}
 
 	/**
 	 * 获取Bean的属性

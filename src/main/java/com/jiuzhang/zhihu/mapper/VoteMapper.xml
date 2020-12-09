@@ -8,6 +8,7 @@
         <result column="type" property="type"/>
         <result column="answer_id" property="answerId"/>
         <result column="user_id" property="userId"/>
+        <result column="is_deleted" property="isDeleted"/>
         <result column="create_person" property="createPerson"/>
         <result column="create_time" property="createTime"/>
         <result column="update_person" property="updatePerson"/>

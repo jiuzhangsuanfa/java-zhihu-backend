@@ -17,15 +17,15 @@
 package com.jiuzhang.zhihu.service;
 
 import com.jiuzhang.zhihu.entity.Answer;
-import com.jiuzhang.zhihu.vo.AnswerVO;
+import com.jiuzhang.zhihu.entity.vo.AnswerVO;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 
 /**
- * 服务类
+ *  服务类
  *
- * @author 九章算法
- * @since 2020-11-06
+ * @author 作者
+ * @since 2020-11-12
  */
 public interface IAnswerService extends IService<Answer> {
 

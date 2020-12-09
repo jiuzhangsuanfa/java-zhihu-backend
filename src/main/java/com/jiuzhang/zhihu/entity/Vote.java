@@ -20,14 +20,17 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import java.time.LocalDateTime;
 import com.baomidou.mybatisplus.annotation.TableId;
 import java.io.Serializable;
+
+import com.baomidou.mybatisplus.annotation.TableLogic;
+import com.jiuzhang.zhihu.common.enums.VoteTypeEnum;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
  * 实体类
  *
- * @author 九章算法
- * @since 2020-11-06
+ * @author 作者
+ * @since 2020-11-12
  */
 @Data
 public class Vote implements Serializable {
@@ -35,21 +38,35 @@ public class Vote implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	/**
-	* 类别：1-赞 0-踩
-	*/
-	private Boolean type;
+	 * id
+	 */
+	@TableId(value="id", type = IdType.ASSIGN_ID)
+	private Long id;
+	/**
+	 * 类别：1-赞 0-踩
+	 * @see VoteTypeEnum
+	 */
+	private Integer type;
 	/**
 	* 答案ID
 	*/
-	private Boolean answerId;
+	private Long answerId;
 	/**
 	* 投票用户ID
 	*/
 	private Long userId;
-	private String createPerson;
-	private LocalDateTime createTime;
-	private String updatePerson;
-	private LocalDateTime updateTime;
+	/**
+	 * 逻辑删除 0-未删除 1-已删除
+	 */
+	@TableLogic
+	private Boolean isDeleted;
 
+	private String createPerson;
+
+	private LocalDateTime createTime;
+
+	private String updatePerson;
+
+	private LocalDateTime updateTime;
 
 }

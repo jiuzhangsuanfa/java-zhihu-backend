@@ -16,32 +16,35 @@
  */
 package com.jiuzhang.zhihu.controller;
 
-import io.swagger.annotations.Api;
-import lombok.AllArgsConstructor;
-import javax.validation.Valid;
-import com.jiuzhang.zhihu.common.R;
-import com.jiuzhang.zhihu.common.Query;
-import org.springblade.core.tool.utils.Func;
-import org.springframework.web.bind.annotation.*;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.jiuzhang.zhihu.common.Func;
+import com.jiuzhang.zhihu.common.api.R;
+import com.jiuzhang.zhihu.common.support.Condition;
+import com.jiuzhang.zhihu.common.support.Query;
 import com.jiuzhang.zhihu.entity.Vote;
-import com.jiuzhang.zhihu.vo.VoteVO;
+import com.jiuzhang.zhihu.entity.vo.VoteVO;
 import com.jiuzhang.zhihu.service.IVoteService;
-import com.jiuzhang.zhihu.common.BaseController;
+import com.jiuzhang.zhihu.service.vote.IVoteStrategyService;
+import lombok.AllArgsConstructor;
+import org.springframework.web.bind.annotation.*;
 
 /**
  *  控制器
  *
- * @author 九章算法
- * @since 2020-11-06
+ * @author 作者
+ * @since 2020-11-12
  */
 @RestController
 @AllArgsConstructor
-@RequestMapping("/")
-@Api(value = "", tags = "接口")
-public class VoteController extends BaseController {
+@RequestMapping("/vote")
+public class VoteController {
 
 	private final IVoteService voteService;
+
+	private final IVoteStrategyService voteStrategyService;
+
+
+	// ---------------------------- CRUD ----------------------------
 
 	/**
 	 * 详情
@@ -56,8 +59,6 @@ public class VoteController extends BaseController {
 	 * 分页 
 	 */
 	@GetMapping("/list")
-	@ApiOperationSupport(order = 2)
-	@ApiOperation(value = "分页", notes = "传入vote")
 	public R<IPage<Vote>> list(Vote vote, Query query) {
 		IPage<Vote> pages = voteService.page(Condition.getPage(query), Condition.getQueryWrapper(vote));
 		return R.data(pages);
@@ -67,8 +68,6 @@ public class VoteController extends BaseController {
 	 * 自定义分页 
 	 */
 	@GetMapping("/page")
-	@ApiOperationSupport(order = 3)
-	@ApiOperation(value = "分页", notes = "传入vote")
 	public R<IPage<VoteVO>> page(VoteVO vote, Query query) {
 		IPage<VoteVO> pages = voteService.selectVotePage(Condition.getPage(query), vote);
 		return R.data(pages);
@@ -78,9 +77,7 @@ public class VoteController extends BaseController {
 	 * 新增 
 	 */
 	@PostMapping("/save")
-	@ApiOperationSupport(order = 4)
-	@ApiOperation(value = "新增", notes = "传入vote")
-	public R save(@Valid @RequestBody Vote vote) {
+	public R save(@RequestBody Vote vote) {
 		return R.status(voteService.save(vote));
 	}
 
@@ -88,9 +85,7 @@ public class VoteController extends BaseController {
 	 * 修改 
 	 */
 	@PostMapping("/update")
-	@ApiOperationSupport(order = 5)
-	@ApiOperation(value = "修改", notes = "传入vote")
-	public R update(@Valid @RequestBody Vote vote) {
+	public R update(@RequestBody Vote vote) {
 		return R.status(voteService.updateById(vote));
 	}
 
@@ -98,22 +93,30 @@ public class VoteController extends BaseController {
 	 * 新增或修改 
 	 */
 	@PostMapping("/submit")
-	@ApiOperationSupport(order = 6)
-	@ApiOperation(value = "新增或修改", notes = "传入vote")
-	public R submit(@Valid @RequestBody Vote vote) {
+	public R submit(@RequestBody Vote vote) {
 		return R.status(voteService.saveOrUpdate(vote));
 	}
-
 
 	/**
 	 * 删除 
 	 */
 	@PostMapping("/remove")
-	@ApiOperationSupport(order = 8)
-	@ApiOperation(value = "删除", notes = "传入ids")
-	public R remove(@ApiParam(value = "主键集合", required = true) @RequestParam String ids) {
+	public R remove(@RequestParam String ids) {
 		return R.status(voteService.removeByIds(Func.toLongList(ids)));
 	}
 
+	// ------------------------------- 赞、踩（多种策略实现）-------------------------------
+	/**
+	 * 提交/取消 赞踩
+	 */
+	@PostMapping("/vote")
+	public R vote(@RequestBody VoteVO vote) {
+
+		// 保存投票记录
+		boolean rv = voteService.saveOrUpdate(vote);
+		// 更新得票计数器
+		voteStrategyService.vote(vote);
+		return R.status(rv);
+	}
 
 }

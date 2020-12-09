@@ -16,6 +16,7 @@
  */
 package com.jiuzhang.zhihu.config;
 
+import com.baomidou.mybatisplus.extension.spring.MybatisSqlSessionFactoryBean;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.SqlSessionTemplate;
@@ -31,7 +32,7 @@ import javax.sql.DataSource;
 /**
  * mybatis数据源配置
  *
- * @author Chill
+ * @author 九章算法
  */
 @Configuration
 public class SqlSessionConfiguration {
@@ -39,7 +40,7 @@ public class SqlSessionConfiguration {
 	@Primary
 	@Bean(name = "sqlSessionFactory")
 	public SqlSessionFactory sqlSessionFactory(DataSource dataSource) throws Exception {
-		SqlSessionFactoryBean sessionFactoryBean = new SqlSessionFactoryBean();
+		MybatisSqlSessionFactoryBean sessionFactoryBean = new MybatisSqlSessionFactoryBean();
 		sessionFactoryBean.setDataSource(dataSource);
 		Resource resource = new PathMatchingResourcePatternResolver().getResource("classpath:mybatis/mybatis-config.xml");
 		sessionFactoryBean.setConfigLocation(resource);

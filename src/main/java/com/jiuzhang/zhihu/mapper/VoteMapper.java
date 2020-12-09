@@ -17,7 +17,7 @@
 package com.jiuzhang.zhihu.mapper;
 
 import com.jiuzhang.zhihu.entity.Vote;
-import com.jiuzhang.zhihu.vo.VoteVO;
+import com.jiuzhang.zhihu.entity.vo.VoteVO;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import java.util.List;
@@ -25,8 +25,8 @@ import java.util.List;
 /**
  *  Mapper 接口
  *
- * @author 九章算法
- * @since 2020-11-06
+ * @author 作者
+ * @since 2020-11-12
  */
 public interface VoteMapper extends BaseMapper<Vote> {
 

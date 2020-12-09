@@ -16,30 +16,28 @@
  */
 package com.jiuzhang.zhihu.controller;
 
-import io.swagger.annotations.Api;
 import lombok.AllArgsConstructor;
-import javax.validation.Valid;
-import com.jiuzhang.zhihu.common.R;
-import com.jiuzhang.zhihu.common.Query;
-import org.springblade.core.tool.utils.Func;
+
+import com.jiuzhang.zhihu.common.support.Condition;
+import com.jiuzhang.zhihu.common.support.Query;
+import com.jiuzhang.zhihu.common.api.R;
+import com.jiuzhang.zhihu.common.Func;
 import org.springframework.web.bind.annotation.*;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.jiuzhang.zhihu.entity.Answer;
-import com.jiuzhang.zhihu.vo.AnswerVO;
+import com.jiuzhang.zhihu.entity.vo.AnswerVO;
 import com.jiuzhang.zhihu.service.IAnswerService;
-import com.jiuzhang.zhihu.common.BaseController;
 
 /**
  *  控制器
  *
- * @author 九章算法
- * @since 2020-11-06
+ * @author 作者
+ * @since 2020-11-12
  */
 @RestController
 @AllArgsConstructor
-@RequestMapping("/")
-@Api(value = "", tags = "接口")
-public class AnswerController extends BaseController {
+@RequestMapping("/answer")
+public class AnswerController {
 
 	private final IAnswerService answerService;
 
@@ -56,8 +54,6 @@ public class AnswerController extends BaseController {
 	 * 分页 
 	 */
 	@GetMapping("/list")
-	@ApiOperationSupport(order = 2)
-	@ApiOperation(value = "分页", notes = "传入answer")
 	public R<IPage<Answer>> list(Answer answer, Query query) {
 		IPage<Answer> pages = answerService.page(Condition.getPage(query), Condition.getQueryWrapper(answer));
 		return R.data(pages);
@@ -67,8 +63,6 @@ public class AnswerController extends BaseController {
 	 * 自定义分页 
 	 */
 	@GetMapping("/page")
-	@ApiOperationSupport(order = 3)
-	@ApiOperation(value = "分页", notes = "传入answer")
 	public R<IPage<AnswerVO>> page(AnswerVO answer, Query query) {
 		IPage<AnswerVO> pages = answerService.selectAnswerPage(Condition.getPage(query), answer);
 		return R.data(pages);
@@ -78,9 +72,7 @@ public class AnswerController extends BaseController {
 	 * 新增 
 	 */
 	@PostMapping("/save")
-	@ApiOperationSupport(order = 4)
-	@ApiOperation(value = "新增", notes = "传入answer")
-	public R save(@Valid @RequestBody Answer answer) {
+	public R save(@RequestBody Answer answer) {
 		return R.status(answerService.save(answer));
 	}
 
@@ -88,9 +80,7 @@ public class AnswerController extends BaseController {
 	 * 修改 
 	 */
 	@PostMapping("/update")
-	@ApiOperationSupport(order = 5)
-	@ApiOperation(value = "修改", notes = "传入answer")
-	public R update(@Valid @RequestBody Answer answer) {
+	public R update(@RequestBody Answer answer) {
 		return R.status(answerService.updateById(answer));
 	}
 
@@ -98,9 +88,7 @@ public class AnswerController extends BaseController {
 	 * 新增或修改 
 	 */
 	@PostMapping("/submit")
-	@ApiOperationSupport(order = 6)
-	@ApiOperation(value = "新增或修改", notes = "传入answer")
-	public R submit(@Valid @RequestBody Answer answer) {
+	public R submit(@RequestBody Answer answer) {
 		return R.status(answerService.saveOrUpdate(answer));
 	}
 
@@ -109,9 +97,7 @@ public class AnswerController extends BaseController {
 	 * 删除 
 	 */
 	@PostMapping("/remove")
-	@ApiOperationSupport(order = 8)
-	@ApiOperation(value = "删除", notes = "传入ids")
-	public R remove(@ApiParam(value = "主键集合", required = true) @RequestParam String ids) {
+	public R remove(@RequestParam String ids) {
 		return R.status(answerService.removeByIds(Func.toLongList(ids)));
 	}
 

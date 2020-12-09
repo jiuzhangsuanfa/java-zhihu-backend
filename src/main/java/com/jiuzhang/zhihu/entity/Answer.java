@@ -20,14 +20,17 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import java.time.LocalDateTime;
 import com.baomidou.mybatisplus.annotation.TableId;
 import java.io.Serializable;
+
+import com.baomidou.mybatisplus.annotation.TableLogic;
+import com.baomidou.mybatisplus.annotation.Version;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
  * 实体类
  *
- * @author 九章算法
- * @since 2020-11-06
+ * @author 作者
+ * @since 2020-11-12
  */
 @Data
 public class Answer implements Serializable {
@@ -35,29 +38,47 @@ public class Answer implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	/**
+	 * id
+	 */
+	@TableId(value="id", type = IdType.ASSIGN_ID)
+	private Long id;
+	/**
 	* 问题答案
 	*/
 	private String content;
 	/**
 	* 发布用户ID
 	*/
-	private Long userId;
+	private String userId;
 	/**
-	* 赞数
-	*/
-	private Integer positiveCount;
+	 * 赞数
+	 */
+	private Integer upvoteCount;
 	/**
-	* 踩数
-	*/
-	private Integer negativeCount;
+	 * 踩数
+	 */
+	private Integer downvoteCount;
 	/**
-	* 是否折叠
+	 * 排名：0-n
+	 */
+	private Double score;
+	/**
+	 * 乐观锁版本号
+	 */
+	@Version
+	private Integer version;
+	/**
+	* 逻辑删除 0-未删除 1-已删除
 	*/
-	private Boolean folded;
-	private String createPerson;
-	private LocalDateTime createTime;
-	private String updatePerson;
-	private LocalDateTime updateTime;
+	@TableLogic
+	private Boolean isDeleted;
 
+	private String createPerson;
+
+	private LocalDateTime createTime;
+
+	private String updatePerson;
+
+	private LocalDateTime updateTime;
 
 }
