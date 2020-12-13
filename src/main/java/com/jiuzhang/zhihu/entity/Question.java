@@ -55,6 +55,10 @@ public class Question implements Serializable {
 	*/
 	private String userId;
 	/**
+	 * 回答总数
+	 */
+	private Integer answerCount;
+	/**
 	 * 逻辑删除 0-未删除 1-已删除
 	 */
 	@TableLogic

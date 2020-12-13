@@ -16,12 +16,15 @@
  */
 package com.jiuzhang.zhihu.controller;
 
+import com.jiuzhang.zhihu.entity.event.QuestionChangeEvent;
 import lombok.AllArgsConstructor;
 
 import com.jiuzhang.zhihu.common.support.Condition;
 import com.jiuzhang.zhihu.common.support.Query;
 import com.jiuzhang.zhihu.common.api.R;
 import com.jiuzhang.zhihu.common.Func;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.web.bind.annotation.*;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.jiuzhang.zhihu.entity.Question;
@@ -40,6 +43,9 @@ import com.jiuzhang.zhihu.service.IQuestionService;
 public class QuestionController {
 
 	private final IQuestionService questionService;
+
+	@Autowired
+	private ApplicationEventPublisher applicationEventPublisher;
 
 	/**
 	 * 详情
@@ -81,6 +87,9 @@ public class QuestionController {
 	 */
 	@PostMapping("/update")
 	public R update(@RequestBody Question question) {
+//		QuestionChangeEvent event = new
+//		applicationEventPublisher.publishEvent();
+
 		return R.status(questionService.updateById(question));
 	}
 
@@ -97,8 +106,8 @@ public class QuestionController {
 	 * 删除 
 	 */
 	@PostMapping("/remove")
-	public R remove(@RequestParam String ids) {
-		return R.status(questionService.removeByIds(Func.toLongList(ids)));
+	public R remove(@RequestParam Long id) {
+		return R.status(questionService.removeById(id));
 	}
 
 

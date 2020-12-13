@@ -34,8 +34,6 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 @Service
 public class VoteServiceImpl extends ServiceImpl<VoteMapper, Vote> implements IVoteService {
 
-	private IAnswerService answerService;
-
 	@Override
 	public IPage<VoteVO> selectVotePage(IPage<VoteVO> page, VoteVO vote) {
 		return page.setRecords(baseMapper.selectVotePage(page, vote));

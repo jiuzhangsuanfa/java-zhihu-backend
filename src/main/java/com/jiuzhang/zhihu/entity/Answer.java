@@ -51,6 +51,10 @@ public class Answer implements Serializable {
 	*/
 	private String userId;
 	/**
+	 * 问题ID
+	 */
+	private Long questionId;
+	/**
 	 * 赞数
 	 */
 	private Integer upvoteCount;

@@ -38,4 +38,20 @@ public interface IQuestionService extends IService<Question> {
 	 */
 	IPage<QuestionVO> selectQuestionPage(IPage<QuestionVO> page, QuestionVO question);
 
+	/**
+	 * 回答计数+1
+	 *
+	 * @param questionId
+	 * @return
+	 */
+	void incrAnswerCount(Long questionId);
+
+	/**
+	 * 回答计数-1
+	 *
+	 * @param questionId
+	 * @return
+	 */
+	void decrAnswerCount(Long questionId);
+
 }

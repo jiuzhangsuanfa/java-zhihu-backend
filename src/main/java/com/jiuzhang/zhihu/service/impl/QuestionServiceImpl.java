@@ -18,9 +18,11 @@ package com.jiuzhang.zhihu.service.impl;
 
 import com.jiuzhang.zhihu.entity.Question;
 import com.jiuzhang.zhihu.entity.vo.QuestionVO;
+import com.jiuzhang.zhihu.mapper.AnswerMapper;
 import com.jiuzhang.zhihu.mapper.QuestionMapper;
 import com.jiuzhang.zhihu.service.IQuestionService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 
@@ -38,4 +40,17 @@ public class QuestionServiceImpl extends ServiceImpl<QuestionMapper, Question> i
 		return page.setRecords(baseMapper.selectQuestionPage(page, question));
 	}
 
+	@Override
+	public void incrAnswerCount(Long questionId) {
+		Question question = getById(questionId);
+		question.setAnswerCount(question.getAnswerCount()+1);
+		updateById(question);
+	}
+
+	@Override
+	public void decrAnswerCount(Long questionId) {
+		Question question = getById(questionId);
+		question.setAnswerCount(question.getAnswerCount()-1);
+		updateById(question);
+	}
 }

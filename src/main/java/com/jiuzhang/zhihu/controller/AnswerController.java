@@ -16,6 +16,7 @@
  */
 package com.jiuzhang.zhihu.controller;
 
+import com.jiuzhang.zhihu.service.IQuestionService;
 import lombok.AllArgsConstructor;
 
 import com.jiuzhang.zhihu.common.support.Condition;
@@ -40,6 +41,8 @@ import com.jiuzhang.zhihu.service.IAnswerService;
 public class AnswerController {
 
 	private final IAnswerService answerService;
+
+	private final IQuestionService questionService;
 
 	/**
 	 * 详情
@@ -73,6 +76,7 @@ public class AnswerController {
 	 */
 	@PostMapping("/save")
 	public R save(@RequestBody Answer answer) {
+		questionService.incrAnswerCount(answer.getQuestionId());
 		return R.status(answerService.save(answer));
 	}
 
@@ -97,9 +101,10 @@ public class AnswerController {
 	 * 删除 
 	 */
 	@PostMapping("/remove")
-	public R remove(@RequestParam String ids) {
-		return R.status(answerService.removeByIds(Func.toLongList(ids)));
+	public R remove(@RequestParam Long id) {
+		Answer answer = answerService.getById(id);
+		questionService.incrAnswerCount(answer.getQuestionId());
+		return R.status(answerService.removeById(id));
 	}
-
 
 }
