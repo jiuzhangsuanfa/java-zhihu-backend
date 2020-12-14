@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>com.jiuzhang.zhihu.service.vote.impl.SimpleVoteStrategyServiceImpl</OriginalElement>
+  <nodes>
+    <node x="359.0" y="381.0">com.jiuzhang.zhihu.service.vote.impl.CachedVoteStrategyServiceImpl</node>
+    <node x="58.0" y="404.0">com.jiuzhang.zhihu.service.vote.impl.SimpleVoteStrategyServiceImpl</node>
+    <node x="0.0" y="104.0">com.jiuzhang.zhihu.service.impl.VoteServiceImpl</node>
+    <node x="407.0" y="104.0">com.jiuzhang.zhihu.service.vote.IVoteStrategyService</node>
+    <node x="155.5" y="0.0">com.jiuzhang.zhihu.service.IVoteService</node>
+    <node x="208.5" y="208.0">com.jiuzhang.zhihu.service.vote.impl.AbstractVoteStrategyServiceImpl</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="com.jiuzhang.zhihu.service.vote.impl.AbstractVoteStrategyServiceImpl" target="com.jiuzhang.zhihu.service.vote.IVoteStrategyService">
+      <point x="70.25" y="-61.5" />
+      <point x="419.25" y="183.0" />
+      <point x="504.5" y="183.0" />
+      <point x="0.0" y="27.0" />
+    </edge>
+    <edge source="com.jiuzhang.zhihu.service.vote.IVoteStrategyService" target="com.jiuzhang.zhihu.service.IVoteService">
+      <point x="0.0" y="-27.0" />
+      <point x="504.5" y="79.0" />
+      <point x="445.75" y="79.0" />
+      <point x="96.75" y="27.0" />
+    </edge>
+    <edge source="com.jiuzhang.zhihu.service.vote.impl.AbstractVoteStrategyServiceImpl" target="com.jiuzhang.zhihu.service.impl.VoteServiceImpl">
+      <point x="-70.25" y="-61.5" />
+      <point x="278.75" y="183.0" />
+      <point x="193.5" y="183.0" />
+      <point x="0.0" y="27.0" />
+    </edge>
+    <edge source="com.jiuzhang.zhihu.service.impl.VoteServiceImpl" target="com.jiuzhang.zhihu.service.IVoteService">
+      <point x="0.0" y="-27.0" />
+      <point x="193.5" y="79.0" />
+      <point x="252.25" y="79.0" />
+      <point x="-96.75" y="27.0" />
+    </edge>
+    <edge source="com.jiuzhang.zhihu.service.vote.impl.SimpleVoteStrategyServiceImpl" target="com.jiuzhang.zhihu.service.vote.impl.AbstractVoteStrategyServiceImpl">
+      <point x="0.0" y="-60.0" />
+      <point x="198.5" y="356.0" />
+      <point x="278.75" y="356.0" />
+      <point x="-70.25" y="61.5" />
+    </edge>
+    <edge source="com.jiuzhang.zhihu.service.vote.impl.CachedVoteStrategyServiceImpl" target="com.jiuzhang.zhihu.service.vote.impl.AbstractVoteStrategyServiceImpl">
+      <point x="0.0" y="-83.0" />
+      <point x="499.5" y="356.0" />
+      <point x="419.25" y="356.0" />
+      <point x="70.25" y="61.5" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="0.7208333333333333" x="465.3410404624277" y="299.76878612716763" />
+  <SelectedNodes />
+  <Categories>
+    <Category>Fields</Category>
+    <Category>Constructors</Category>
+    <Category>Methods</Category>
+    <Category>Inner Classes</Category>
+    <Category>Properties</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+
