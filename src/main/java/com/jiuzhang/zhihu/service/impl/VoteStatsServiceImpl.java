@@ -14,21 +14,29 @@
  *  this software without specific prior written permission.
  *  Author: Chill 庄骞 (smallchill@163.com)
  */
-package com.jiuzhang.zhihu.entity.dto;
+package com.jiuzhang.zhihu.service.impl;
 
-import com.jiuzhang.zhihu.entity.Vote;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import com.jiuzhang.zhihu.entity.VoteStats;
+import com.jiuzhang.zhihu.entity.vo.VoteStatsVO;
+import com.jiuzhang.zhihu.mapper.VoteMapper;
+import com.jiuzhang.zhihu.service.IVoteStatsService;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Service;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 
 /**
- * 数据传输对象实体类
+ *  服务实现类
  *
  * @author 作者
- * @since 2020-11-22
+ * @since 2020-11-12
  */
-@Data
-@EqualsAndHashCode(callSuper = true)
-public class VoteDTO extends Vote {
-	private static final long serialVersionUID = 1L;
+@Service
+@Qualifier("voteService")
+public class VoteStatsServiceImpl extends ServiceImpl<VoteMapper, VoteStats> implements IVoteStatsService {
 
+	@Override
+	public IPage<VoteStatsVO> selectVotePage(IPage<VoteStatsVO> page, VoteStatsVO vote) {
+		return page.setRecords(baseMapper.selectVotePage(page, vote));
+	}
 }

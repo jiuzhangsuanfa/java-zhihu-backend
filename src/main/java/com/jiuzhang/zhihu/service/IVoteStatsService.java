@@ -16,8 +16,8 @@
  */
 package com.jiuzhang.zhihu.service;
 
-import com.jiuzhang.zhihu.entity.Vote;
-import com.jiuzhang.zhihu.entity.vo.VoteVO;
+import com.jiuzhang.zhihu.entity.VoteStats;
+import com.jiuzhang.zhihu.entity.vo.VoteStatsVO;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 
@@ -27,7 +27,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
  * @author 作者
  * @since 2020-11-12
  */
-public interface IVoteService extends IService<Vote> {
+public interface IVoteStatsService extends IService<VoteStats> {
 
 	/**
 	 * 自定义分页
@@ -36,6 +36,6 @@ public interface IVoteService extends IService<Vote> {
 	 * @param vote
 	 * @return
 	 */
-	IPage<VoteVO> selectVotePage(IPage<VoteVO> page, VoteVO vote);
+	IPage<VoteStatsVO> selectVotePage(IPage<VoteStatsVO> page, VoteStatsVO vote);
 
 }

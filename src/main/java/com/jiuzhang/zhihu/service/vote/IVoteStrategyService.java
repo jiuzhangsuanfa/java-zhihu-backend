@@ -18,7 +18,7 @@ package com.jiuzhang.zhihu.service.vote;
 
 
 import com.jiuzhang.zhihu.entity.vo.VoteVO;
-import com.jiuzhang.zhihu.service.IVoteService;
+import com.jiuzhang.zhihu.service.IVoteStatsService;
 
 /**
  *  服务类
@@ -26,29 +26,48 @@ import com.jiuzhang.zhihu.service.IVoteService;
  * @author 作者
  * @since 2020-11-12
  */
-public interface IVoteStrategyService extends IVoteService {
+public interface IVoteStrategyService extends IVoteStatsService {
+
+    /**
+     * 用户对答案是否已投票
+     *
+     * @param answerId
+     * @param voteType
+     * @return
+     */
+    boolean checkVote(Long answerId, int voteType, String userId);
 
     /**
      * 取得投票总数
      *
      * @param answerId
-     * @param userId
      * @param voteType
      * @return
      */
-    int getCount(Long answerId, String userId, int voteType);
+    int getCount(Long answerId, int voteType);
 
     /**
-     * 投票
-     *
-     * 提交或取消赞/踩
+     * 投票（提交或取消赞/踩）
      *
      * @param voteVo
      * @return
      */
-    void vote(VoteVO voteVo);
+    boolean vote(VoteVO voteVo);
 
-//    void addVote();
+    /**
+     * 提交投票 赞/踩
+     *
+     * @param vote
+     * @return
+     */
+    boolean submitVote(VoteVO vote);
 
-//    void cancelVote();
+    /**
+     * 取消投票 赞/踩
+     *
+     * @param vote
+     * @return
+     */
+    boolean cancelVote(VoteVO vote);
+
 }

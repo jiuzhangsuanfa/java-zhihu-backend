@@ -18,7 +18,7 @@ package com.jiuzhang.zhihu.service.vote.impl;
 
 import com.jiuzhang.zhihu.common.enums.VoteActionEnum;
 import com.jiuzhang.zhihu.entity.vo.VoteVO;
-import com.jiuzhang.zhihu.service.impl.VoteServiceImpl;
+import com.jiuzhang.zhihu.service.impl.VoteStatsServiceImpl;
 import com.jiuzhang.zhihu.service.vote.IVoteStrategyService;
 
 /**
@@ -27,74 +27,45 @@ import com.jiuzhang.zhihu.service.vote.IVoteStrategyService;
  * @author 九章算法
  * @since 2020-11-25
  */
-public abstract class AbstractVoteStrategyServiceImpl extends VoteServiceImpl implements IVoteStrategyService {
+public abstract class AbstractVoteStrategyServiceImpl extends VoteStatsServiceImpl implements IVoteStrategyService {
+
+	/**
+	 * 判断是否已投票
+	 * @param answerId
+	 * @param voteType
+	 */
+	public abstract boolean checkVote(Long answerId, int voteType, String userId);
 
 	/**
 	 * 写入投票记录
 	 * @param answerId
-	 * @param userId
 	 * @param voteType
 	 */
-	@Override
-	public int getCount(Long answerId, String userId, int voteType) {
-		return calcVoteCount(answerId, userId, voteType);
-	}
+	public abstract int getCount(Long answerId, int voteType);
+
+	public abstract boolean submitVote(VoteVO vote);
+
+	public abstract boolean cancelVote(VoteVO vote);
 
 	@Override
-	public void vote(VoteVO vote) {
-		int action = vote.getAction();
+	public boolean vote(VoteVO vote) {
 		if (VoteActionEnum.SUBMIT.getCategory() == vote.getAction()) {
-			submitVote(vote);
+			return submitVote(vote);
 		}
-		if (VoteActionEnum.CANCEL.getCategory() == vote.getAction()) {
-			cancelVote(vote);
+		else if (VoteActionEnum.CANCEL.getCategory() == vote.getAction()) {
+			return cancelVote(vote);
 		}
-
-//		int count = determineCount(action);
-		logVote(vote);
-//		changeVoteCount(vote.getAnswerId(), vote.getType(), vote.getAction(), count);
+		else {
+			return false;
+		}
 	}
 
-	/**
-	 * 写入投票记录
-	 * @param answerId
-	 * @param userId
-	 * @param voteType
-	 */
-	protected abstract int calcVoteCount(Long answerId, String userId, int voteType);
-
-	protected abstract void submitVote(VoteVO vote);
-
-	protected abstract void cancelVote(VoteVO vote);
-
-
-	/**
-	 * 写入投票记录
-	 * @param vote
-	 */
-	protected abstract void logVote(VoteVO vote);
-
-	/**
-	 * 改变answer的投票计数器
-	 * @param answerId
-	 * @param voteType
-	 * @param count
-	 */
-	protected abstract void changeVoteCount(Long answerId, int voteType, int voteAction, int count);
-
-
-
-
-	private int determineCount(int action) {
-		int count;
-		if (action == VoteActionEnum.SUBMIT.getCategory()) {
-			count = 1;
-		} else if (action == VoteActionEnum.CANCEL.getCategory()) {
-			count = -1;
-		} else {
-			throw new IllegalStateException("Unexpected voteAction value: " + action);
-		}
-		return count;
-	}
+//	/**
+//	 * 改变answer的投票计数器
+//	 * @param answerId
+//	 * @param voteType
+//	 * @param count
+//	 */
+//	protected abstract void changeVoteCount(Long answerId, int voteType, int voteAction, int count);
 
 }

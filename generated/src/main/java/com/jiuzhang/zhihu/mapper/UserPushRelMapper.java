@@ -14,45 +14,29 @@
  *  this software without specific prior written permission.
  *  Author: Chill 庄骞 (smallchill@163.com)
  */
-package com.jiuzhang.zhihu.entity.vo;
+package com.jiuzhang.zhihu.mapper;
 
-import com.jiuzhang.zhihu.common.enums.VoteTypeEnum;
-import com.jiuzhang.zhihu.common.enums.VoteActionEnum;
-import lombok.Data;
-import org.joda.time.DateTime;
+import com.jiuzhang.zhihu.entity.UserPushRel;
+import com.jiuzhang.zhihu.entity.vo.UserPushRelVO;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import java.util.List;
 
 /**
- * 视图实体类
+ *  Mapper 接口
  *
  * @author 作者
- * @since 2020-11-22
+ * @since 2020-12-15
  */
-@Data
-public class VoteVO {
-
-	private static final long serialVersionUID = 1L;
+public interface UserPushRelMapper extends BaseMapper<UserPushRel> {
 
 	/**
-	 * 答案ID
+	 * 自定义分页
+	 *
+	 * @param page
+	 * @param userPushRel
+	 * @return
 	 */
-	private Long answerId;
-	/**
-	 * 投票用户ID
-	 */
-	private String userId;
-	/**
-	 * 类别：1-赞 0-踩
-	 * @see VoteTypeEnum
-	 */
-	private Integer type;
-	/**
-	 * 类别：1-投票 0-取消
-	 * @see VoteActionEnum
-	 */
-	private Integer action;
-	/**
-	 * 创建时间
-	 * @see VoteTypeEnum
-	 */
-	private DateTime createTime;
+	List<UserPushRelVO> selectUserPushRelPage(IPage page, UserPushRelVO userPushRel);
+
 }

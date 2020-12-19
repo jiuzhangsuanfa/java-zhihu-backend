@@ -3,7 +3,7 @@
 <mapper namespace="com.jiuzhang.zhihu.mapper.VoteMapper">
 
     <!-- 通用查询映射结果 -->
-    <resultMap id="voteResultMap" type="com.jiuzhang.zhihu.entity.Vote">
+    <resultMap id="voteResultMap" type="com.jiuzhang.zhihu.entity.VoteStats">
         <result column="id" property="id"/>
         <result column="type" property="type"/>
         <result column="answer_id" property="answerId"/>
@@ -17,7 +17,7 @@
 
 
     <select id="selectVotePage" resultMap="voteResultMap">
-        select * from vote where is_deleted = 0
+        select * from voteStats where is_deleted = 0
     </select>
 
 </mapper>

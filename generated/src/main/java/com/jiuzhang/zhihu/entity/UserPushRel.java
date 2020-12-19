@@ -17,12 +17,9 @@
 package com.jiuzhang.zhihu.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
-import java.time.LocalDateTime;
 import com.baomidou.mybatisplus.annotation.TableId;
+import java.time.LocalDateTime;
 import java.io.Serializable;
-
-import com.baomidou.mybatisplus.annotation.TableLogic;
-import com.baomidou.mybatisplus.annotation.Version;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -30,51 +27,18 @@ import lombok.EqualsAndHashCode;
  * 实体类
  *
  * @author 作者
- * @since 2020-11-12
+ * @since 2020-12-15
  */
 @Data
-public class Answer implements Serializable {
+public class UserPushRel implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	/**
-	 * id
-	 */
-	@TableId(value="id", type = IdType.ASSIGN_ID)
-	private Long id;
-	/**
-	* 问题答案
-	*/
-	private String content;
-	/**
-	* 发布用户ID
-	*/
-	private String userId;
-	/**
-	 * 问题ID
-	 */
-	private Long questionId;
-	/**
-	 * 排名：0-n
-	 */
-	private Double score;
-	/**
-	 * 乐观锁版本号
-	 */
-	@Version
-	private Integer version;
-	/**
-	* 逻辑删除 0-未删除 1-已删除
-	*/
-	@TableLogic
-	private Boolean isDeleted;
+	@TableId(value = "user_id", type = IdType.AUTO)
+	private Long userId;
+	private String pushId;
+	private LocalDateTime gmtCreate;
+	private LocalDateTime gmtModify;
 
-	private String createPerson;
-
-	private LocalDateTime createTime;
-
-	private String updatePerson;
-
-	private LocalDateTime updateTime;
 
 }

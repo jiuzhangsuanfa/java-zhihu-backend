@@ -16,43 +16,37 @@
  */
 package com.jiuzhang.zhihu.controller;
 
-import com.jiuzhang.zhihu.entity.event.QuestionChangeEvent;
 import lombok.AllArgsConstructor;
 
 import com.jiuzhang.zhihu.common.support.Condition;
 import com.jiuzhang.zhihu.common.support.Query;
-import com.jiuzhang.zhihu.common.api.R;
+import com.jiuzhang.zhihu.common.R;
 import com.jiuzhang.zhihu.common.Func;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.web.bind.annotation.*;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.jiuzhang.zhihu.entity.Question;
-import com.jiuzhang.zhihu.entity.vo.QuestionVO;
-import com.jiuzhang.zhihu.service.IQuestionService;
+import com.jiuzhang.zhihu.entity.UserPushRel;
+import com.jiuzhang.zhihu.entity.vo.UserPushRelVO;
+import com.jiuzhang.zhihu.service.IUserPushRelService;
 
 /**
  *  控制器
  *
  * @author 作者
- * @since 2020-11-12
+ * @since 2020-12-15
  */
 @RestController
 @AllArgsConstructor
-@RequestMapping("/questions")
-public class QuestionController {
+@RequestMapping("/")
+public class UserPushRelController {
 
-	private final IQuestionService questionService;
-
-	@Autowired
-	private ApplicationEventPublisher applicationEventPublisher;
+	private final IUserPushRelService userPushRelService;
 
 	/**
 	 * 详情
 	 */
 	@GetMapping("/detail")
-	public R<Question> detail(Question question) {
-		Question detail = questionService.getOne(Condition.getQueryWrapper(question));
+	public R<UserPushRel> detail(UserPushRel userPushRel) {
+		UserPushRel detail = userPushRelService.getOne(Condition.getQueryWrapper(userPushRel));
 		return R.data(detail);
 	}
 
@@ -60,8 +54,8 @@ public class QuestionController {
 	 * 分页 
 	 */
 	@GetMapping("/list")
-	public R<IPage<Question>> list(Question question, Query query) {
-		IPage<Question> pages = questionService.page(Condition.getPage(query), Condition.getQueryWrapper(question));
+	public R<IPage<UserPushRel>> list(UserPushRel userPushRel, Query query) {
+		IPage<UserPushRel> pages = userPushRelService.page(Condition.getPage(query), Condition.getQueryWrapper(userPushRel));
 		return R.data(pages);
 	}
 
@@ -69,8 +63,8 @@ public class QuestionController {
 	 * 自定义分页 
 	 */
 	@GetMapping("/page")
-	public R<IPage<QuestionVO>> page(QuestionVO question, Query query) {
-		IPage<QuestionVO> pages = questionService.selectQuestionPage(Condition.getPage(query), question);
+	public R<IPage<UserPushRelVO>> page(UserPushRelVO userPushRel, Query query) {
+		IPage<UserPushRelVO> pages = userPushRelService.selectUserPushRelPage(Condition.getPage(query), userPushRel);
 		return R.data(pages);
 	}
 
@@ -78,27 +72,24 @@ public class QuestionController {
 	 * 新增 
 	 */
 	@PostMapping("/save")
-	public R save(@RequestBody Question question) {
-		return R.status(questionService.save(question));
+	public R save(@RequestBody UserPushRel userPushRel) {
+		return R.status(userPushRelService.save(userPushRel));
 	}
 
 	/**
 	 * 修改 
 	 */
 	@PostMapping("/update")
-	public R update(@RequestBody Question question) {
-//		QuestionChangeEvent event = new
-//		applicationEventPublisher.publishEvent();
-
-		return R.status(questionService.updateById(question));
+	public R update(@RequestBody UserPushRel userPushRel) {
+		return R.status(userPushRelService.updateById(userPushRel));
 	}
 
 	/**
 	 * 新增或修改 
 	 */
 	@PostMapping("/submit")
-	public R submit(@RequestBody Question question) {
-		return R.status(questionService.saveOrUpdate(question));
+	public R submit(@RequestBody UserPushRel userPushRel) {
+		return R.status(userPushRelService.saveOrUpdate(userPushRel));
 	}
 
 
@@ -106,8 +97,8 @@ public class QuestionController {
 	 * 删除 
 	 */
 	@PostMapping("/remove")
-	public R remove(@RequestParam Long id) {
-		return R.status(questionService.removeById(id));
+	public R remove(@RequestParam String ids) {
+		return R.status(userPushRelService.removeByIds(Func.toLongList(ids)));
 	}
 
 

@@ -16,8 +16,8 @@
  */
 package com.jiuzhang.zhihu.mapper;
 
-import com.jiuzhang.zhihu.entity.Vote;
-import com.jiuzhang.zhihu.entity.vo.VoteVO;
+import com.jiuzhang.zhihu.entity.VoteStats;
+import com.jiuzhang.zhihu.entity.vo.VoteStatsVO;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import java.util.List;
@@ -28,7 +28,7 @@ import java.util.List;
  * @author 作者
  * @since 2020-11-12
  */
-public interface VoteMapper extends BaseMapper<Vote> {
+public interface VoteMapper extends BaseMapper<VoteStats> {
 
 	/**
 	 * 自定义分页
@@ -37,6 +37,6 @@ public interface VoteMapper extends BaseMapper<Vote> {
 	 * @param vote
 	 * @return
 	 */
-	List<VoteVO> selectVotePage(IPage page, VoteVO vote);
+	List<VoteStatsVO> selectVotePage(IPage page, VoteStatsVO vote);
 
 }

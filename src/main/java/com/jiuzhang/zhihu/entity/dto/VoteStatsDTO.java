@@ -14,67 +14,21 @@
  *  this software without specific prior written permission.
  *  Author: Chill 庄骞 (smallchill@163.com)
  */
-package com.jiuzhang.zhihu.entity;
+package com.jiuzhang.zhihu.entity.dto;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import java.time.LocalDateTime;
-import com.baomidou.mybatisplus.annotation.TableId;
-import java.io.Serializable;
-
-import com.baomidou.mybatisplus.annotation.TableLogic;
-import com.baomidou.mybatisplus.annotation.Version;
+import com.jiuzhang.zhihu.entity.VoteStats;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
- * 实体类
+ * 数据传输对象实体类
  *
  * @author 作者
- * @since 2020-11-12
+ * @since 2020-11-22
  */
 @Data
-public class Answer implements Serializable {
-
+@EqualsAndHashCode(callSuper = true)
+public class VoteStatsDTO extends VoteStats {
 	private static final long serialVersionUID = 1L;
-
-	/**
-	 * id
-	 */
-	@TableId(value="id", type = IdType.ASSIGN_ID)
-	private Long id;
-	/**
-	* 问题答案
-	*/
-	private String content;
-	/**
-	* 发布用户ID
-	*/
-	private String userId;
-	/**
-	 * 问题ID
-	 */
-	private Long questionId;
-	/**
-	 * 排名：0-n
-	 */
-	private Double score;
-	/**
-	 * 乐观锁版本号
-	 */
-	@Version
-	private Integer version;
-	/**
-	* 逻辑删除 0-未删除 1-已删除
-	*/
-	@TableLogic
-	private Boolean isDeleted;
-
-	private String createPerson;
-
-	private LocalDateTime createTime;
-
-	private String updatePerson;
-
-	private LocalDateTime updateTime;
 
 }

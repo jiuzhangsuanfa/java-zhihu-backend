@@ -16,15 +16,21 @@
  */
 package com.jiuzhang.zhihu.service.vote.impl;
 
-import com.jiuzhang.zhihu.common.enums.VoteActionEnum;
-import com.jiuzhang.zhihu.common.enums.VoteTypeEnum;
-import com.jiuzhang.zhihu.entity.Answer;
-import com.jiuzhang.zhihu.entity.Vote;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.jiuzhang.zhihu.entity.VoteStats;
 import com.jiuzhang.zhihu.entity.vo.VoteVO;
-import com.jiuzhang.zhihu.service.IAnswerService;
-import com.jiuzhang.zhihu.service.IVoteService;
+import com.jiuzhang.zhihu.entity.vo.VoteStatsVO;
+import com.jiuzhang.zhihu.service.IVoteStatsService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
+
+import java.util.HashSet;
+import java.util.Optional;
+import java.util.Set;
 
 /**
  * 基于缓存的投票服务策略类
@@ -32,47 +38,102 @@ import org.springframework.stereotype.Service;
  * @author 九章算法
  * @since 2020-11-25
  */
-//@Service
+@Slf4j
+@Primary
+@Service("simpleVoteStrategyService")
 public class SimpleVoteStrategyServiceImpl extends AbstractVoteStrategyServiceImpl {
 
 	@Autowired
-	private IAnswerService answerService;
+	private IVoteStatsService voteStatsService;
+
+	private Gson gson = new Gson();
 
 	@Override
-	protected void logVote(VoteVO vote) {
-		if (VoteActionEnum.SUBMIT.getCategory() == vote.getAction()) {
-			this.save(vote);
+	public boolean checkVote(Long answerId, int voteType, String userId) {
+		VoteStats stats = queryVoteStats(answerId, voteType);
+		Set<String> users = deserializeSet(stats.getVoteUsers());
+		return users.contains(userId);
+	}
+
+	@Override
+	public int getCount(Long answerId, int voteType) {
+		VoteStats stats = queryVoteStats(answerId, voteType);
+		return Optional.ofNullable(stats).map(item -> item.getVoteCount()).orElse(0);
+	}
+
+	@Override
+	public synchronized boolean submitVote(VoteVO vote) {
+
+		String userId = vote.getUserId();
+		Long answerId = vote.getAnswerId();
+		Integer type = vote.getType();
+
+		VoteStats stats = queryVoteStats(answerId, type);
+		if (stats == null) {
+			stats = new VoteStats(answerId, type);
 		}
-		if (VoteActionEnum.CANCEL.getCategory() == vote.getAction()) {
-			this.removeById(vote);
+
+		Set<String> users = deserializeSet(stats.getVoteUsers());
+
+		// 1. 判断是否 投过票
+		if (users.contains(userId) ) {
+			return true;
 		}
+
+		// 2. 保存
+		stats.setVoteCount(stats.getVoteCount()+1);
+		users.add(userId);
+		stats.setVoteUsers(gson.toJson(users));
+
+		return voteStatsService.saveOrUpdate(stats);
+	}
+
+	@Override
+	public synchronized boolean cancelVote(VoteVO vote) {
+
+		String userId = vote.getUserId();
+		Long answerId = vote.getAnswerId();
+		Integer type = vote.getType();
+
+		VoteStats stats = queryVoteStats(answerId, type);
+		Set<String> users = deserializeSet(stats.getVoteUsers());
+
+		// 1. 判断是否 投过票
+		if (!users.contains(userId) ) {
+			return true;
+		}
+
+		// 2. 保存
+		stats.setVoteCount(stats.getVoteCount()-1);
+		users.remove(userId);
+		stats.setVoteUsers(gson.toJson(users));
+
+		return voteStatsService.updateById(stats);
 	}
 
 	/**
-	 * 改变answer的投票数（支持乐观锁）
-	 *
+	 * 查询 answer的投票统计
 	 * @param answerId
-	 * @param voteType
-	 * @param voteAction
-	 * @param count
+	 * @param type
+	 * @return
 	 */
-	protected void changeVoteCount(Long answerId, int voteType, int voteAction, int count) {
-		Answer answer = answerService.getById(answerId);
-		if (answer==null) {
-			return;
-		}
+	private VoteStats queryVoteStats(Long answerId, Integer type) {
+		VoteStats voteStats = new VoteStats();
+		voteStats.setAnswerId(answerId);
+		voteStats.setType(type);
+		QueryWrapper<VoteStats> query = new QueryWrapper<>(voteStats);
+		return voteStatsService.getOne(query);
+	}
 
-		boolean rv = false;
-		if (voteType == VoteTypeEnum.UPVOTE.getCategory()) {
-			answer.setUpvoteCount(answer.getUpvoteCount()+count);
-			rv = answerService.updateById(answer);
-		} else if (voteType == 0) {
-			int downCount = Math.max(answer.getDownvoteCount()+count, 0);
-			answer.setDownvoteCount(downCount);
-			rv = answerService.updateById(answer);
-		} else {
-			throw new IllegalStateException("Unexpected value: " + voteType);
-		}
+	private Set<String> deserializeSet(String json) {
+		String strVoters = Optional.ofNullable(json).orElse("");
+		Gson gson = new Gson();
+		return  (Set<String>) Optional.ofNullable(gson.fromJson(strVoters, new TypeToken<Set<String>>(){}.getType()) )
+				.orElse(new HashSet<String>(0));
+	}
+
+	private boolean alreadyVoted(VoteStatsVO vote) {
+		return true;
 	}
 
 }

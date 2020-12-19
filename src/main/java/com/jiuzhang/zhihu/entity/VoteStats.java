@@ -33,7 +33,7 @@ import lombok.EqualsAndHashCode;
  * @since 2020-11-12
  */
 @Data
-public class Vote implements Serializable {
+public class VoteStats implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -43,18 +43,22 @@ public class Vote implements Serializable {
 	@TableId(value="id", type = IdType.ASSIGN_ID)
 	private Long id;
 	/**
+	 * 答案ID
+	 */
+	private Long answerId;
+	/**
 	 * 类别：1-赞 0-踩
 	 * @see VoteTypeEnum
 	 */
 	private Integer type;
 	/**
-	* 答案ID
-	*/
-	private Long answerId;
+	 * 投票总数
+	 */
+	private Integer voteCount;
 	/**
-	* 投票用户ID
-	*/
-	private Long userId;
+	 * 投票用户ID
+	 */
+	private String voteUsers;
 	/**
 	 * 逻辑删除 0-未删除 1-已删除
 	 */
@@ -69,4 +73,13 @@ public class Vote implements Serializable {
 
 	private LocalDateTime updateTime;
 
+	public VoteStats() {
+	}
+
+	public VoteStats(Long answerId, Integer type) {
+		this.answerId = answerId;
+		this.type = type;
+		this.voteCount = 0;
+		this.voteUsers = "";
+	}
 }

@@ -14,7 +14,6 @@ import java.security.Principal;
 
 @EnableCaching
 @EnableScheduling
-@RestController
 @SpringBootApplication
 @MapperScan("com.jiuzhang.zhihu.mapper")
 public class ZhihuApplication {

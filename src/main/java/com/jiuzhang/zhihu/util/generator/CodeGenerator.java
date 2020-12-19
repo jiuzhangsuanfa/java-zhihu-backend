@@ -44,7 +44,8 @@ public class CodeGenerator {
             @Override
             public String outputFile(TableInfo tableInfo) {
                 // 自定义输出文件名 ， 如果你 Entity 设置了前后缀、此处注意 xml 的名称会跟着发生变化！！
-                return projectPath + "/src/main/java/" +"com/jiuzhang/zhihu/entity/"+ "dto/"+ pc.getModuleName()
+                return projectPath + "/generated" + "/src/main/java/"
+                        +"com/jiuzhang/zhihu/entity/"+ "dto/"+ pc.getModuleName()
                         + "/" + tableInfo.getEntityName() +"DTO"+ StringPool.DOT_JAVA;
             }
         });
@@ -54,7 +55,8 @@ public class CodeGenerator {
             @Override
             public String outputFile(TableInfo tableInfo) {
                 // 自定义输出文件名 ， 如果你 Entity 设置了前后缀、此处注意 xml 的名称会跟着发生变化！！
-                return projectPath + "/src/main/java/" +"com/jiuzhang/zhihu/entity/"+"vo/"+ pc.getModuleName()
+                return projectPath + "/generated" + "/src/main/java/"
+                        +"com/jiuzhang/zhihu/entity/"+"vo/"+ pc.getModuleName()
                         + "/" + tableInfo.getEntityName() +"VO"+ StringPool.DOT_JAVA;
             }
         });
@@ -83,14 +85,14 @@ public class CodeGenerator {
         strategy.setCapitalMode(true);
         strategy.setNaming(NamingStrategy.underline_to_camel);
         strategy.setColumnNaming(NamingStrategy.underline_to_camel);
-//        strategy.setSuperEntityClass("BaseController");
         strategy.setEntityLombokModel(true);
         strategy.setRestControllerStyle(true);
         // 公共父类
         strategy.setSuperControllerClass("BaseController");
         // 写于父类中的公共字段
         strategy.setSuperEntityColumns("id");
-        strategy.setInclude("question", "answer", "vote");
+//        strategy.setInclude("question", "answer", "vote");
+        strategy.setInclude("user_push_rel");
 //        strategy.setInclude(scanner("表名，多个英文逗号分割").split(","));
         strategy.setControllerMappingHyphenStyle(true);
         strategy.setTablePrefix(pc.getModuleName() + "_");

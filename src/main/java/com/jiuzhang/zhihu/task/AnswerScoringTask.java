@@ -1,21 +1,20 @@
-package com.jiuzhang.zhihu.job;
+package com.jiuzhang.zhihu.task;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.google.common.collect.Lists;
+import com.jiuzhang.zhihu.common.enums.VoteTypeEnum;
 import com.jiuzhang.zhihu.entity.Answer;
 import com.jiuzhang.zhihu.entity.Question;
 import com.jiuzhang.zhihu.entity.vo.QuestionVO;
 import com.jiuzhang.zhihu.service.IAnswerService;
 import com.jiuzhang.zhihu.service.IQuestionService;
 import com.jiuzhang.zhihu.service.score.ScoreAlgorithmStrategy;
+import com.jiuzhang.zhihu.service.vote.IVoteStrategyService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -24,7 +23,7 @@ import java.util.List;
  */
 @Slf4j
 @Component
-public class AnswerScoringJob {
+public class AnswerScoringTask {
 
     @Autowired
     private IQuestionService questionService;
@@ -33,11 +32,12 @@ public class AnswerScoringJob {
     private IAnswerService answerService;
 
     @Autowired
+    private IVoteStrategyService voteService;
+
+    @Autowired
     private ScoreAlgorithmStrategy scoreAlgorithm;
 
-    /**
-     * 将缓存中的
-     */
+
 //    @Scheduled(cron="*/10 * * * * ?")
     public void execute() {
         log.info("开始执行answer排名");
@@ -57,23 +57,18 @@ public class AnswerScoringJob {
                     score(answer);
                 }
             }
-
         }
 
         log.info("answer排名结束");
     }
 
     private void score(Answer answer) {
-        Integer upVoteCount = answer.getUpvoteCount();
-        Integer downVoteCount = answer.getDownvoteCount();
+        int upVoteCount = voteService.getCount(answer.getId(), VoteTypeEnum.UPVOTE.getCategory());
+        int downVoteCount = voteService.getCount(answer.getId(), VoteTypeEnum.DOWNVOTE.getCategory());
 
         double score = scoreAlgorithm.score(upVoteCount, upVoteCount+downVoteCount);
         answer.setScore(score);
         answerService.updateById(answer);
-
-//        List<Answer> answers = new ArrayList<>(4);
-//        answers.add(answer);
-//        boolean rv = answerService.updateBatchById(answers);
     }
 
 }

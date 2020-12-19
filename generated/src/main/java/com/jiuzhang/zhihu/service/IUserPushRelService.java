@@ -14,28 +14,28 @@
  *  this software without specific prior written permission.
  *  Author: Chill 庄骞 (smallchill@163.com)
  */
-package com.jiuzhang.zhihu.service.impl;
+package com.jiuzhang.zhihu.service;
 
-import com.jiuzhang.zhihu.entity.Vote;
-import com.jiuzhang.zhihu.entity.vo.VoteVO;
-import com.jiuzhang.zhihu.mapper.VoteMapper;
-import com.jiuzhang.zhihu.service.IAnswerService;
-import com.jiuzhang.zhihu.service.IVoteService;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import org.springframework.stereotype.Service;
+import com.jiuzhang.zhihu.entity.UserPushRel;
+import com.jiuzhang.zhihu.entity.vo.UserPushRelVO;
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 
 /**
- *  服务实现类
+ *  服务类
  *
  * @author 作者
- * @since 2020-11-12
+ * @since 2020-12-15
  */
-@Service
-public class VoteServiceImpl extends ServiceImpl<VoteMapper, Vote> implements IVoteService {
+public interface IUserPushRelService extends IService<UserPushRel> {
 
-	@Override
-	public IPage<VoteVO> selectVotePage(IPage<VoteVO> page, VoteVO vote) {
-		return page.setRecords(baseMapper.selectVotePage(page, vote));
-	}
+	/**
+	 * 自定义分页
+	 *
+	 * @param page
+	 * @param userPushRel
+	 * @return
+	 */
+	IPage<UserPushRelVO> selectUserPushRelPage(IPage<UserPushRelVO> page, UserPushRelVO userPushRel);
+
 }

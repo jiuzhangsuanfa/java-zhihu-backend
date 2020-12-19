@@ -14,45 +14,28 @@
  *  this software without specific prior written permission.
  *  Author: Chill 庄骞 (smallchill@163.com)
  */
-package com.jiuzhang.zhihu.entity.vo;
+package com.jiuzhang.zhihu.service.impl;
 
-import com.jiuzhang.zhihu.common.enums.VoteTypeEnum;
-import com.jiuzhang.zhihu.common.enums.VoteActionEnum;
-import lombok.Data;
-import org.joda.time.DateTime;
+import com.jiuzhang.zhihu.entity.UserPushRel;
+import com.jiuzhang.zhihu.entity.vo.UserPushRelVO;
+import com.jiuzhang.zhihu.mapper.UserPushRelMapper;
+import com.jiuzhang.zhihu.service.IUserPushRelService;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.springframework.stereotype.Service;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 
 /**
- * 视图实体类
+ *  服务实现类
  *
  * @author 作者
- * @since 2020-11-22
+ * @since 2020-12-15
  */
-@Data
-public class VoteVO {
+@Service
+public class UserPushRelServiceImpl extends ServiceImpl<UserPushRelMapper, UserPushRel> implements IUserPushRelService {
 
-	private static final long serialVersionUID = 1L;
+	@Override
+	public IPage<UserPushRelVO> selectUserPushRelPage(IPage<UserPushRelVO> page, UserPushRelVO userPushRel) {
+		return page.setRecords(baseMapper.selectUserPushRelPage(page, userPushRel));
+	}
 
-	/**
-	 * 答案ID
-	 */
-	private Long answerId;
-	/**
-	 * 投票用户ID
-	 */
-	private String userId;
-	/**
-	 * 类别：1-赞 0-踩
-	 * @see VoteTypeEnum
-	 */
-	private Integer type;
-	/**
-	 * 类别：1-投票 0-取消
-	 * @see VoteActionEnum
-	 */
-	private Integer action;
-	/**
-	 * 创建时间
-	 * @see VoteTypeEnum
-	 */
-	private DateTime createTime;
 }

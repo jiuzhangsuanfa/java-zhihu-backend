@@ -44,7 +44,7 @@ minio:
 
 # 认证服务
 keycloak:
-  auth-server-url: http://localhost:8080/authgit
+  auth-server-url: http://localhost:8080/auth
   realm: zhihu
   resource: zhihu-oidc
   principal-attribute: preferred_username
@@ -60,7 +60,7 @@ keycloak:
           patterns:
             - /question/*
             - /answer/*
-            - /vote/*
+#            - /vote/*
 
 
 
