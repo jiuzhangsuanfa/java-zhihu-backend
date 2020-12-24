@@ -36,6 +36,14 @@ public interface IVoteStatsService extends IService<VoteStats> {
 	 * @param vote
 	 * @return
 	 */
-	IPage<VoteStatsVO> selectVotePage(IPage<VoteStatsVO> page, VoteStatsVO vote);
+	IPage<VoteStatsVO> selectVoteStatsPage(IPage<VoteStatsVO> page, VoteStatsVO vote);
 
+	/**
+	 * 按条件查询 统计数
+	 *
+	 * @param answerId
+	 * @param type
+	 * @return
+	 */
+	VoteStats queryByCondition(Long answerId, int type);
 }

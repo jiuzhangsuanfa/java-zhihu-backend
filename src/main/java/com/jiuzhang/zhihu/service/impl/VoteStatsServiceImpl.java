@@ -16,9 +16,10 @@
  */
 package com.jiuzhang.zhihu.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.jiuzhang.zhihu.entity.VoteStats;
 import com.jiuzhang.zhihu.entity.vo.VoteStatsVO;
-import com.jiuzhang.zhihu.mapper.VoteMapper;
+import com.jiuzhang.zhihu.mapper.VoteStatsMapper;
 import com.jiuzhang.zhihu.service.IVoteStatsService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -32,11 +33,17 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
  * @since 2020-11-12
  */
 @Service
-@Qualifier("voteService")
-public class VoteStatsServiceImpl extends ServiceImpl<VoteMapper, VoteStats> implements IVoteStatsService {
+@Qualifier("voteStatsService")
+public class VoteStatsServiceImpl extends ServiceImpl<VoteStatsMapper, VoteStats> implements IVoteStatsService {
 
 	@Override
-	public IPage<VoteStatsVO> selectVotePage(IPage<VoteStatsVO> page, VoteStatsVO vote) {
-		return page.setRecords(baseMapper.selectVotePage(page, vote));
+	public IPage<VoteStatsVO> selectVoteStatsPage(IPage<VoteStatsVO> page, VoteStatsVO vote) {
+		return page.setRecords(baseMapper.selectVoteStatsPage(page, vote));
+	}
+
+	@Override
+	public VoteStats queryByCondition(Long answerId, int type) {
+		VoteStats query = new VoteStats(answerId, type);
+		return getOne(new QueryWrapper<>(query));
 	}
 }

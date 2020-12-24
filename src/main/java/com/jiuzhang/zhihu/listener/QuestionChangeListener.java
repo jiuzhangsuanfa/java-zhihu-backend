@@ -1,4 +1,4 @@
-package com.jiuzhang.zhihu;
+package com.jiuzhang.zhihu.listener;
 
 import com.jiuzhang.zhihu.entity.event.QuestionChangeEvent;
 import com.jiuzhang.zhihu.service.search.IndexService;

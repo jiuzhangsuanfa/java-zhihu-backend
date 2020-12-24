@@ -26,7 +26,7 @@ import com.jiuzhang.zhihu.service.IVoteStatsService;
  * @author 作者
  * @since 2020-11-12
  */
-public interface IVoteStrategyService extends IVoteStatsService {
+public interface IVoteStrategyService {
 
     /**
      * 用户对答案是否已投票
@@ -45,14 +45,6 @@ public interface IVoteStrategyService extends IVoteStatsService {
      * @return
      */
     int getCount(Long answerId, int voteType);
-
-    /**
-     * 投票（提交或取消赞/踩）
-     *
-     * @param voteVo
-     * @return
-     */
-    boolean vote(VoteVO voteVo);
 
     /**
      * 提交投票 赞/踩

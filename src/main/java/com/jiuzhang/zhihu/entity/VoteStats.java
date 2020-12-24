@@ -79,7 +79,5 @@ public class VoteStats implements Serializable {
 	public VoteStats(Long answerId, Integer type) {
 		this.answerId = answerId;
 		this.type = type;
-		this.voteCount = 0;
-		this.voteUsers = "";
 	}
 }

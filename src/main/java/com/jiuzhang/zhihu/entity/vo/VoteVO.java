@@ -55,4 +55,13 @@ public class VoteVO {
 	 * @see VoteTypeEnum
 	 */
 	private DateTime createTime;
+
+	public VoteVO() {
+	}
+
+	public VoteVO(Long answerId, String userId, Integer type) {
+		this.answerId = answerId;
+		this.userId = userId;
+		this.type = type;
+	}
 }

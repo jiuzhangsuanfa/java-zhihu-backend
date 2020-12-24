@@ -26,17 +26,17 @@ import java.util.List;
  *  Mapper 接口
  *
  * @author 作者
- * @since 2020-11-12
+ * @since 2020-12-23
  */
-public interface VoteMapper extends BaseMapper<VoteStats> {
+public interface VoteStatsMapper extends BaseMapper<VoteStats> {
 
 	/**
 	 * 自定义分页
 	 *
 	 * @param page
-	 * @param vote
+	 * @param voteStats
 	 * @return
 	 */
-	List<VoteStatsVO> selectVotePage(IPage page, VoteStatsVO vote);
+	List<VoteStatsVO> selectVoteStatsPage(IPage page, VoteStatsVO voteStats);
 
 }

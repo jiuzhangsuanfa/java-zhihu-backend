@@ -1,16 +1,23 @@
 package com.jiuzhang.zhihu.task;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.jiuzhang.zhihu.common.enums.VoteTypeEnum;
+import com.jiuzhang.zhihu.constant.Constants;
 import com.jiuzhang.zhihu.entity.Answer;
 import com.jiuzhang.zhihu.entity.VoteStats;
 import com.jiuzhang.zhihu.service.IAnswerService;
 import com.jiuzhang.zhihu.service.IVoteStatsService;
+import com.jiuzhang.zhihu.service.vote.IVoteStrategyService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.util.Set;
+
+import static com.jiuzhang.zhihu.constant.Constants.VOTED_ANSWERS;
 
 /**
  * 用户投票统计任务
@@ -21,11 +28,8 @@ import java.util.Set;
 public class VotePersistenceTask {
 
     @Autowired
-    private IAnswerService answerService;
-
-    @Autowired
-    @Qualifier("voteService")
-    private IVoteStatsService voteService;
+    @Qualifier("voteStatsService")
+    private IVoteStatsService voteStatsService;
 
     @Autowired
     private RedisTemplate redisTemplate;
@@ -33,30 +37,51 @@ public class VotePersistenceTask {
     /**
      * 将缓存中的刷入DB
      */
-//    @Scheduled(cron="*/10 * * * * ?")
+    @Scheduled(cron="*/10 * * * * ?")
     public void execute() {
-        log.info("开始同步点赞入库");
+
+        log.info("开始定时批量点赞入库");
 
         // 投票被更改过的 answer ids
-        Set<String> votedAnswerIds = redisTemplate.opsForSet().members("voted_answer_ids");
+        Set<Long> votedAnswerIds = redisTemplate.opsForSet().members(VOTED_ANSWERS);
 
         // 计数 & 投票用户列表
-        for (String aId : votedAnswerIds) {
+        for (Long answerId : votedAnswerIds) {
 
-            Integer upCount = (Integer) redisTemplate.opsForValue().get("answer_vote_count:" + "up:" + aId);
-            Set<String> upVoterIds = redisTemplate.opsForSet().members("answer_voter_ids:up:" + aId);
-            Integer downCount = (Integer) redisTemplate.opsForValue().get("answer_vote_count:" + "down:" + aId);
-            Set<String> downVoterIds = redisTemplate.opsForSet().members("answer_voter_ids:down:" + aId);
+            for (VoteTypeEnum typeEnum : VoteTypeEnum.values()) {
+                String countKey = Constants.ANSWER_VOTE_COUNT + answerId + VoteTypeEnum.UPVOTE.getCategory();
+                String voterIdsKey = Constants.ANSWER_VOTER_SET + answerId + VoteTypeEnum.UPVOTE.getCategory();
 
-            VoteStats upVoteStats = voteService.getOne(null);
-            upVoteStats.setVoteCount(upCount);
-            upVoteStats.setVoteUsers(upVoterIds.toString());
+                // 查询缓存中的 计数+投票ids
+                Integer count = (Integer) redisTemplate.opsForValue().get(countKey);
+                Set<String> voterIds = redisTemplate.opsForSet().members(voterIdsKey);
 
-            VoteStats downVoteStats = voteService.getOne(null);
-            downVoteStats.setVoteCount(downCount);
-            downVoteStats.setVoteUsers(downVoterIds.toString());
-        }
+                // 更新统计数
+                int type = typeEnum.getCategory();
+                QueryWrapper<VoteStats> query = new QueryWrapper<>(new VoteStats(answerId, type));
+                VoteStats upVoteStats = voteStatsService.getOne(query);
 
-        log.info("点赞入库结束");
+                // 如果记录不存在，则新建
+                if (upVoteStats == null) {
+                    upVoteStats = new VoteStats(answerId, type);
+                }
+                upVoteStats.setVoteCount(count);
+                upVoteStats.setVoteUsers(voterIds.toString());
+
+                // 保存记录
+                boolean rv = voteStatsService.saveOrUpdate(upVoteStats);
+                if (rv) {
+                    // 移除更新记录
+                    redisTemplate.opsForSet().remove(VOTED_ANSWERS, answerId);
+                    redisTemplate.delete(countKey);
+                    redisTemplate.delete(voterIdsKey);
+                    log.error("点赞定时批量入库成功");
+                } else {
+                    log.error("点赞定时批量入库失败");
+                }
+
+            } // for(;;)
+        } // for(;;)
+
     }
 }

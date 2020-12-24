@@ -24,9 +24,11 @@ import com.jiuzhang.zhihu.common.support.Query;
 import com.jiuzhang.zhihu.entity.VoteStats;
 import com.jiuzhang.zhihu.entity.vo.VoteVO;
 import com.jiuzhang.zhihu.entity.vo.VoteStatsVO;
+import com.jiuzhang.zhihu.service.IVoteStatsService;
 import com.jiuzhang.zhihu.service.vote.IVoteStrategyService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -37,78 +39,16 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @AllArgsConstructor
-@RequestMapping("/vote")
+@RequestMapping("/votes")
 public class VoteController {
 
-//	@Autowired
-//	@Qualifier("voteService")
-//	private final IVoteService voteService;
+	@Autowired
+	@Qualifier("voteStatsService")
+	private final IVoteStatsService voteStatsService;
 
 	@Autowired
-//	@Qualifier("simpleVoteStrategyService")
+	@Qualifier("cachedVoteStrategyService")
 	private final IVoteStrategyService voteStrategyService;
-
-
-	// ---------------------------- CRUD ----------------------------
-
-	/**
-	 * 详情
-	 */
-	@GetMapping("/detail")
-	public R<VoteStats> detail(VoteStats voteStats) {
-		VoteStats detail = voteStrategyService.getOne(Condition.getQueryWrapper(voteStats));
-		return R.data(detail);
-	}
-
-	/**
-	 * 分页 
-	 */
-	@GetMapping("/list")
-	public R<IPage<VoteStats>> list(VoteStats voteStats, Query query) {
-		IPage<VoteStats> pages = voteStrategyService.page(Condition.getPage(query), Condition.getQueryWrapper(voteStats));
-		return R.data(pages);
-	}
-
-	/**
-	 * 自定义分页 
-	 */
-	@GetMapping("/page")
-	public R<IPage<VoteStatsVO>> page(VoteStatsVO vote, Query query) {
-		IPage<VoteStatsVO> pages = voteStrategyService.selectVotePage(Condition.getPage(query), vote);
-		return R.data(pages);
-	}
-
-	/**
-	 * 新增 
-	 */
-	@PostMapping("/save")
-	public R save(@RequestBody VoteStats voteStats) {
-		return R.status(voteStrategyService.save(voteStats));
-	}
-
-	/**
-	 * 修改 
-	 */
-	@PostMapping("/update")
-	public R update(@RequestBody VoteStats voteStats) {
-		return R.status(voteStrategyService.updateById(voteStats));
-	}
-
-	/**
-	 * 新增或修改 
-	 */
-	@PostMapping("/submit")
-	public R submit(@RequestBody VoteStats voteStats) {
-		return R.status(voteStrategyService.saveOrUpdate(voteStats));
-	}
-
-	/**
-	 * 删除 
-	 */
-	@PostMapping("/remove")
-	public R remove(@RequestParam String ids) {
-		return R.status(voteStrategyService.removeByIds(Func.toLongList(ids)));
-	}
 
 	// ------------------------------- 赞、踩（多种策略实现）-------------------------------
 	/**
@@ -124,35 +64,95 @@ public class VoteController {
 	/**
 	 * 提交/取消 赞踩
 	 */
-	@RequestMapping("/getCount")
+	@GetMapping("/")
 	public R getCount(@RequestParam Long answerId,
 					  @RequestParam int voteType) {
 		return R.data(voteStrategyService.getCount(answerId, voteType));
 	}
 
 	/**
-	 * 提交/取消 赞踩
-	 */
-	@PostMapping("/vote")
-	public R vote(@RequestBody VoteVO vote) {
-		return R.status(voteStrategyService.vote(vote));
-	}
-
-	/**
 	 * 提交 赞或踩
 	 */
-	@PostMapping("/submitVote")
+	@PostMapping("/")
 	public R submitVote(@RequestBody VoteVO vote) {
-		// 更新得票计数器
 		return R.status(voteStrategyService.submitVote(vote));
 	}
 
 	/**
 	 * 提交 赞或踩
 	 */
-	@PostMapping("/cancelVote")
+	@DeleteMapping("/")
 	public R cancelVote(@RequestBody VoteVO vote) {
-		// 更新得票计数器
 		return R.status(voteStrategyService.cancelVote(vote));
 	}
+
+//	/**
+//	 * 提交/取消 赞踩
+//	 */
+//	@PostMapping("/")
+//	public R vote(@RequestBody VoteVO vote) {
+//		return R.status(voteStrategyService.vote(vote));
+//	}
+
+	// ---------------------------- CRUD ----------------------------
+
+	/**
+	 * 详情
+	 */
+	@GetMapping("/detail")
+	public R<VoteStats> detail(VoteStats voteStats) {
+		VoteStats detail = voteStatsService.getOne(Condition.getQueryWrapper(voteStats));
+		return R.data(detail);
+	}
+
+	/**
+	 * 分页 
+	 */
+	@GetMapping("/list")
+	public R<IPage<VoteStats>> list(VoteStats voteStats, Query query) {
+		IPage<VoteStats> pages = voteStatsService.page(Condition.getPage(query), Condition.getQueryWrapper(voteStats));
+		return R.data(pages);
+	}
+
+	/**
+	 * 自定义分页 
+	 */
+//	@GetMapping("/page")
+//	public R<IPage<VoteStatsVO>> page(VoteStatsVO vote, Query query) {
+//		IPage<VoteStatsVO> pages = voteStrategyService.selectVotePage(Condition.getPage(query), vote);
+//		return R.data(pages);
+//	}
+
+	/**
+	 * 新增 
+	 */
+	@PostMapping("/save")
+	public R save(@RequestBody VoteStats voteStats) {
+		return R.status(voteStatsService.save(voteStats));
+	}
+
+	/**
+	 * 修改 
+	 */
+	@PostMapping("/update")
+	public R update(@RequestBody VoteStats voteStats) {
+		return R.status(voteStatsService.updateById(voteStats));
+	}
+
+	/**
+	 * 新增或修改 
+	 */
+	@PostMapping("/submit")
+	public R submit(@RequestBody VoteStats voteStats) {
+		return R.status(voteStatsService.saveOrUpdate(voteStats));
+	}
+
+	/**
+	 * 删除 
+	 */
+	@PostMapping("/remove")
+	public R remove(@RequestParam String ids) {
+		return R.status(voteStatsService.removeByIds(Func.toLongList(ids)));
+	}
+
 }

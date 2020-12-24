@@ -27,7 +27,7 @@ import com.jiuzhang.zhihu.service.vote.IVoteStrategyService;
  * @author 九章算法
  * @since 2020-11-25
  */
-public abstract class AbstractVoteStrategyServiceImpl extends VoteStatsServiceImpl implements IVoteStrategyService {
+public abstract class AbstractVoteStrategyServiceImpl implements IVoteStrategyService {
 
 	/**
 	 * 判断是否已投票
@@ -43,29 +43,16 @@ public abstract class AbstractVoteStrategyServiceImpl extends VoteStatsServiceIm
 	 */
 	public abstract int getCount(Long answerId, int voteType);
 
+	/**
+	 * 点赞/踩
+	 * @param vote
+	 */
 	public abstract boolean submitVote(VoteVO vote);
 
+	/**
+	 * 取消赞/踩
+	 * @param vote
+	 */
 	public abstract boolean cancelVote(VoteVO vote);
-
-	@Override
-	public boolean vote(VoteVO vote) {
-		if (VoteActionEnum.SUBMIT.getCategory() == vote.getAction()) {
-			return submitVote(vote);
-		}
-		else if (VoteActionEnum.CANCEL.getCategory() == vote.getAction()) {
-			return cancelVote(vote);
-		}
-		else {
-			return false;
-		}
-	}
-
-//	/**
-//	 * 改变answer的投票计数器
-//	 * @param answerId
-//	 * @param voteType
-//	 * @param count
-//	 */
-//	protected abstract void changeVoteCount(Long answerId, int voteType, int voteAction, int count);
 
 }

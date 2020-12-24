@@ -91,8 +91,8 @@ public class CodeGenerator {
         strategy.setSuperControllerClass("BaseController");
         // 写于父类中的公共字段
         strategy.setSuperEntityColumns("id");
-//        strategy.setInclude("question", "answer", "vote");
-        strategy.setInclude("user_push_rel");
+//        strategy.setInclude("question", "answer", "vote_stats");
+        strategy.setInclude("vote_stats");
 //        strategy.setInclude(scanner("表名，多个英文逗号分割").split(","));
         strategy.setControllerMappingHyphenStyle(true);
         strategy.setTablePrefix(pc.getModuleName() + "_");
@@ -137,10 +137,10 @@ public class CodeGenerator {
         PackageConfig pc = new PackageConfig();
 //        pc.setModuleName("zhihu");
         pc.setParent("com.jiuzhang.zhihu")
-                .setMapper("mapper")
-                .setService("service")
                 .setController("controller")
+                .setService("service")
                 .setEntity("entity")
+                .setMapper("mapper")
                 .setXml("mapper");
         return pc;
     }

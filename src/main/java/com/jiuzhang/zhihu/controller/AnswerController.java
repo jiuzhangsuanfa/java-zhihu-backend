@@ -37,7 +37,7 @@ import com.jiuzhang.zhihu.service.IAnswerService;
  */
 @RestController
 @AllArgsConstructor
-@RequestMapping("/answer")
+@RequestMapping("/answers")
 public class AnswerController {
 
 	private final IAnswerService answerService;
@@ -47,16 +47,16 @@ public class AnswerController {
 	/**
 	 * 详情
 	 */
-	@GetMapping("/detail")
-	public R<Answer> detail(Answer answer) {
-		Answer detail = answerService.getOne(Condition.getQueryWrapper(answer));
-		return R.data(detail);
-	}
+//	@GetMapping("/{id}")
+//	public R<Answer> detail(Answer answer) {
+//		Answer detail = answerService.getOne(Condition.getQueryWrapper(answer));
+//		return R.data(detail);
+//	}
 
 	/**
 	 * 分页 
 	 */
-	@GetMapping("/list")
+	@GetMapping("/")
 	public R<IPage<Answer>> list(Answer answer, Query query) {
 		IPage<Answer> pages = answerService.page(Condition.getPage(query), Condition.getQueryWrapper(answer));
 		return R.data(pages);
@@ -65,16 +65,16 @@ public class AnswerController {
 	/**
 	 * 自定义分页 
 	 */
-	@GetMapping("/page")
-	public R<IPage<AnswerVO>> page(AnswerVO answer, Query query) {
-		IPage<AnswerVO> pages = answerService.selectAnswerPage(Condition.getPage(query), answer);
-		return R.data(pages);
-	}
+//	@GetMapping("/page")
+//	public R<IPage<AnswerVO>> page(AnswerVO answer, Query query) {
+//		IPage<AnswerVO> pages = answerService.selectAnswerPage(Condition.getPage(query), answer);
+//		return R.data(pages);
+//	}
 
 	/**
 	 * 新增 
 	 */
-	@PostMapping("/save")
+	@PostMapping("/")
 	public R save(@RequestBody Answer answer) {
 		questionService.incrAnswerCount(answer.getQuestionId());
 		return R.status(answerService.save(answer));
@@ -83,25 +83,25 @@ public class AnswerController {
 	/**
 	 * 修改 
 	 */
-	@PostMapping("/update")
-	public R update(@RequestBody Answer answer) {
-		return R.status(answerService.updateById(answer));
-	}
+//	@PostMapping("/update")
+//	public R update(@RequestBody Answer answer) {
+//		return R.status(answerService.updateById(answer));
+//	}
 
 	/**
 	 * 新增或修改 
 	 */
-	@PostMapping("/submit")
-	public R submit(@RequestBody Answer answer) {
-		return R.status(answerService.saveOrUpdate(answer));
-	}
+//	@PostMapping("/submit")
+//	public R submit(@RequestBody Answer answer) {
+//		return R.status(answerService.saveOrUpdate(answer));
+//	}
 
 
 	/**
 	 * 删除 
 	 */
-	@PostMapping("/remove")
-	public R remove(@RequestParam Long id) {
+	@DeleteMapping("/{id}")
+	public R remove(@PathVariable(name = "id") Long id) {
 		Answer answer = answerService.getById(id);
 		questionService.incrAnswerCount(answer.getQuestionId());
 		return R.status(answerService.removeById(id));

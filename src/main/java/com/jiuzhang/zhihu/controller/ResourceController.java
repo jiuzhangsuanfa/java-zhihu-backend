@@ -16,46 +16,46 @@
  */
 package com.jiuzhang.zhihu.controller;
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.jiuzhang.zhihu.common.api.R;
-import com.jiuzhang.zhihu.common.support.Query;
-import com.jiuzhang.zhihu.entity.Question;
-import com.jiuzhang.zhihu.service.ISearchService;
+import com.jiuzhang.zhihu.service.search.IndexService;
+import com.jiuzhang.zhihu.util.MinioUtil;
 import lombok.AllArgsConstructor;
+import org.elasticsearch.search.SearchHits;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import javax.servlet.http.HttpServletRequest;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
- *  搜索控制器
+ *  资源控制器
  *
- * @author 作者
+ * @author 九章算法
  * @since 2020-11-09
  */
 @RestController
 @AllArgsConstructor
-@RequestMapping("/q")
-public class SearchController {
+@RequestMapping("/resources")
+public class ResourceController {
 
-	private final ISearchService searchService;
+	private MinioUtil minioUtil;
 
 	/**
-	 * 首页时间线
+	 * 索引全部Question
 	 */
-	@GetMapping("/search")
-	public R<IPage<Question>> search(HttpServletRequest request, Query query) {
-//		query.
-		return R.data(null);
+	@PostMapping("/")
+	public void get() {
+//		minioUtil.
+//		return null;
 	}
 
 	/**
-	 * 创建单条索引
+	 * 搜索Question
 	 */
-	@GetMapping("/index")
-	public void index(Question question) {
-//		query.
-		return;
+	@GetMapping("/")
+	public R<String> upload(MultipartFile file) {
+		minioUtil.putObject("default", file, "name");
+		return R.data("path");
 	}
+
 }

@@ -39,8 +39,8 @@ import java.util.Set;
  * @since 2020-11-25
  */
 @Slf4j
-@Primary
-@Service("simpleVoteStrategyService")
+//@Primary
+//@Service("simpleVoteStrategyService")
 public class SimpleVoteStrategyServiceImpl extends AbstractVoteStrategyServiceImpl {
 
 	@Autowired

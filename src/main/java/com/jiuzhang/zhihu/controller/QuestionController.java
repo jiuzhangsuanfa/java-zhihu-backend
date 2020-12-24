@@ -50,16 +50,18 @@ public class QuestionController {
 	/**
 	 * 详情
 	 */
-	@GetMapping("/detail")
-	public R<Question> detail(Question question) {
-		Question detail = questionService.getOne(Condition.getQueryWrapper(question));
+	@PostMapping("/{id}")
+	public R<Question> detail(@PathVariable(name = "id") Long id) {
+		Question query = new Question();
+		query.setId(id);
+		Question detail = questionService.getOne(Condition.getQueryWrapper(query));
 		return R.data(detail);
 	}
 
 	/**
-	 * 分页 
+	 * 发布问题
 	 */
-	@GetMapping("/list")
+	@GetMapping("/")
 	public R<IPage<Question>> list(Question question, Query query) {
 		IPage<Question> pages = questionService.page(Condition.getPage(query), Condition.getQueryWrapper(question));
 		return R.data(pages);
@@ -68,17 +70,20 @@ public class QuestionController {
 	/**
 	 * 自定义分页 
 	 */
-	@GetMapping("/page")
-	public R<IPage<QuestionVO>> page(QuestionVO question, Query query) {
-		IPage<QuestionVO> pages = questionService.selectQuestionPage(Condition.getPage(query), question);
-		return R.data(pages);
-	}
+//	@PostMapping("/page")
+//	public R<IPage<QuestionVO>> page(QuestionVO question, Query query) {
+//		IPage<QuestionVO> pages = questionService.selectQuestionPage(Condition.getPage(query), question);
+//		return R.data(pages);
+//	}
 
 	/**
-	 * 新增 
+	 * 新增 （发布问题）
 	 */
-	@PostMapping("/save")
+	@PostMapping("/")
 	public R save(@RequestBody Question question) {
+		QuestionChangeEvent event = new QuestionChangeEvent(null);
+		applicationEventPublisher.publishEvent(event);
+
 		return R.status(questionService.save(question));
 	}
 
@@ -87,26 +92,23 @@ public class QuestionController {
 	 */
 	@PostMapping("/update")
 	public R update(@RequestBody Question question) {
-//		QuestionChangeEvent event = new
-//		applicationEventPublisher.publishEvent();
-
 		return R.status(questionService.updateById(question));
 	}
 
 	/**
 	 * 新增或修改 
 	 */
-	@PostMapping("/submit")
-	public R submit(@RequestBody Question question) {
-		return R.status(questionService.saveOrUpdate(question));
-	}
+//	@PostMapping("/submit")
+//	public R submit(@RequestBody Question question) {
+//		return R.status(questionService.saveOrUpdate(question));
+//	}
 
 
 	/**
 	 * 删除 
 	 */
-	@PostMapping("/remove")
-	public R remove(@RequestParam Long id) {
+	@DeleteMapping("/{id}")
+	public R remove(@PathVariable(name = "id") Long id) {
 		return R.status(questionService.removeById(id));
 	}
 
