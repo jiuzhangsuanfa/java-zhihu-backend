@@ -72,4 +72,10 @@ public class Question implements Serializable {
 
 	private LocalDateTime updateTime;
 
+	public Question() {
+	}
+
+	public Question(Long id) {
+		this.id = id;
+	}
 }

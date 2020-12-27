@@ -50,31 +50,30 @@ public class QuestionController {
 	/**
 	 * 详情
 	 */
-	@PostMapping("/{id}")
+	@GetMapping("/{id}")
 	public R<Question> detail(@PathVariable(name = "id") Long id) {
-		Question query = new Question();
-		query.setId(id);
+		Question query = new Question(id);
 		Question detail = questionService.getOne(Condition.getQueryWrapper(query));
 		return R.data(detail);
 	}
 
-	/**
-	 * 发布问题
-	 */
-	@GetMapping("/")
-	public R<IPage<Question>> list(Question question, Query query) {
-		IPage<Question> pages = questionService.page(Condition.getPage(query), Condition.getQueryWrapper(question));
-		return R.data(pages);
-	}
+//	/**
+//	 * 问题列表
+//	 */
+//	@GetMapping("/")
+//	public R<IPage<Question>> list(Question question, Query query) {
+//		IPage<Question> pages = questionService.page(Condition.getPage(query), Condition.getQueryWrapper(question));
+//		return R.data(pages);
+//	}
 
 	/**
 	 * 自定义分页 
 	 */
-//	@PostMapping("/page")
-//	public R<IPage<QuestionVO>> page(QuestionVO question, Query query) {
-//		IPage<QuestionVO> pages = questionService.selectQuestionPage(Condition.getPage(query), question);
-//		return R.data(pages);
-//	}
+	@GetMapping("/")
+	public R<IPage<QuestionVO>> page(QuestionVO question, Query query) {
+		IPage<QuestionVO> pages = questionService.selectQuestionPage(Condition.getPage(query), question);
+		return R.data(pages);
+	}
 
 	/**
 	 * 新增 （发布问题）
@@ -98,10 +97,10 @@ public class QuestionController {
 	/**
 	 * 新增或修改 
 	 */
-//	@PostMapping("/submit")
-//	public R submit(@RequestBody Question question) {
-//		return R.status(questionService.saveOrUpdate(question));
-//	}
+	@PutMapping("/")
+	public R submit(@RequestBody Question question) {
+		return R.status(questionService.saveOrUpdate(question));
+	}
 
 
 	/**
@@ -111,6 +110,5 @@ public class QuestionController {
 	public R remove(@PathVariable(name = "id") Long id) {
 		return R.status(questionService.removeById(id));
 	}
-
 
 }
