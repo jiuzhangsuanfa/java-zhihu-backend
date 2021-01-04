@@ -36,12 +36,12 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/votes")
 public class VoteController {
 
-	@Autowired
-	@Qualifier("voteStatsService")
-	private final IVoteStatsService voteStatsService;
+//	@Autowired
+//	@Qualifier("voteStatsService")
+//	private final IVoteStatsService voteStatsService;
 
 	@Autowired
-	@Qualifier("cachedVoteStrategyService")
+	@Qualifier("simpleVoteStrategyService")
 	private final IVoteStrategyService voteStrategyService;
 
 	// ------------------------------- 赞、踩（多种策略实现）-------------------------------

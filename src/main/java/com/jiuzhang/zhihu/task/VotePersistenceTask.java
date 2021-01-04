@@ -6,6 +6,7 @@ import com.jiuzhang.zhihu.constant.Constants;
 import com.jiuzhang.zhihu.entity.VoteStats;
 import com.jiuzhang.zhihu.service.IVoteStatsService;
 import com.jiuzhang.zhihu.service.vote.VoteStatsCacheService;
+import com.jiuzhang.zhihu.util.SetUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -38,7 +39,7 @@ public class VotePersistenceTask {
     /**
      * 将缓存中的刷入DB
      */
-    @Scheduled(cron="*/10 * * * * ?")
+    @Scheduled(cron="*/5 * * * * ?")
     public void execute() {
 
         log.info("开始定时批量点赞入库");
@@ -68,7 +69,7 @@ public class VotePersistenceTask {
                     upVoteStats = new VoteStats(answerId, type);
                 }
                 upVoteStats.setVoteCount(count);
-                upVoteStats.setVoteUsers(setToString(voterIds));
+                upVoteStats.setVoteUsers(SetUtil.serialize(voterIds));
 
                 // 保存记录
                 boolean rv = voteStatsService.saveOrUpdate(upVoteStats);
@@ -89,10 +90,6 @@ public class VotePersistenceTask {
             } // for(;;)
         } // for(;;)
 
-    }
-
-    private String setToString(Set<String> ids) {
-        return String.join(",", ids);
     }
 
 }

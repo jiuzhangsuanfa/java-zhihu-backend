@@ -1,13 +1,9 @@
 package com.jiuzhang.zhihu.service.vote.impl;
 
-import com.jiuzhang.zhihu.entity.VoteStats;
 import com.jiuzhang.zhihu.entity.vo.VoteVO;
-import com.jiuzhang.zhihu.service.IVoteStatsService;
 import com.jiuzhang.zhihu.service.vote.VoteStatsCacheService;
-import com.jiuzhang.zhihu.util.StringUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
@@ -22,7 +18,7 @@ import static com.jiuzhang.zhihu.constant.Constants.*;
  * @since 2020-11-25
  */
 @Slf4j
-@Service("cachedVoteStrategyService")
+//@Service("cachedVoteStrategyService")
 public class CachedVoteStrategyServiceImpl extends AbstractVoteStrategyServiceImpl {
 
 	@Autowired

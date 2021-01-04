@@ -17,18 +17,15 @@
 package com.jiuzhang.zhihu.service.vote.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.jiuzhang.zhihu.entity.VoteStats;
 import com.jiuzhang.zhihu.entity.vo.VoteVO;
-import com.jiuzhang.zhihu.entity.vo.VoteStatsVO;
 import com.jiuzhang.zhihu.service.IVoteStatsService;
+import com.jiuzhang.zhihu.util.SetUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
@@ -39,19 +36,17 @@ import java.util.Set;
  * @since 2020-11-25
  */
 @Slf4j
-//@Primary
-//@Service("simpleVoteStrategyService")
+@Primary
+@Service("simpleVoteStrategyService")
 public class SimpleVoteStrategyServiceImpl extends AbstractVoteStrategyServiceImpl {
 
 	@Autowired
 	private IVoteStatsService voteStatsService;
 
-	private Gson gson = new Gson();
-
 	@Override
 	public boolean checkVote(Long answerId, int voteType, String userId) {
 		VoteStats stats = queryVoteStats(answerId, voteType);
-		Set<String> users = deserializeSet(stats.getVoteUsers());
+		Set<String> users = SetUtil.deserialize(stats.getVoteUsers());
 		return users.contains(userId);
 	}
 
@@ -69,21 +64,22 @@ public class SimpleVoteStrategyServiceImpl extends AbstractVoteStrategyServiceIm
 		Integer type = vote.getType();
 
 		VoteStats stats = queryVoteStats(answerId, type);
+		// 如果投票记录不存在，创建新记录
 		if (stats == null) {
 			stats = new VoteStats(answerId, type);
 		}
 
-		Set<String> users = deserializeSet(stats.getVoteUsers());
+		Set<String> users = SetUtil.deserialize(stats.getVoteUsers());
 
-		// 1. 判断是否 投过票
+		// 判断是否 投过票
 		if (users.contains(userId) ) {
 			return true;
 		}
 
-		// 2. 保存
-		stats.setVoteCount(stats.getVoteCount()+1);
+		// 保存入库
+		stats.setVoteCount(stats.getVoteCount() + 1);
 		users.add(userId);
-		stats.setVoteUsers(gson.toJson(users));
+		stats.setVoteUsers(SetUtil.serialize(users));
 
 		return voteStatsService.saveOrUpdate(stats);
 	}
@@ -96,17 +92,17 @@ public class SimpleVoteStrategyServiceImpl extends AbstractVoteStrategyServiceIm
 		Integer type = vote.getType();
 
 		VoteStats stats = queryVoteStats(answerId, type);
-		Set<String> users = deserializeSet(stats.getVoteUsers());
+		Set<String> users = SetUtil.deserialize(stats.getVoteUsers());
 
-		// 1. 判断是否 投过票
+		// 判断是否 投过票
 		if (!users.contains(userId) ) {
 			return true;
 		}
 
-		// 2. 保存
-		stats.setVoteCount(stats.getVoteCount()-1);
+		// 保存入库
+		stats.setVoteCount(stats.getVoteCount() - 1);
 		users.remove(userId);
-		stats.setVoteUsers(gson.toJson(users));
+		stats.setVoteUsers(SetUtil.serialize(users));
 
 		return voteStatsService.updateById(stats);
 	}
@@ -121,19 +117,9 @@ public class SimpleVoteStrategyServiceImpl extends AbstractVoteStrategyServiceIm
 		VoteStats voteStats = new VoteStats();
 		voteStats.setAnswerId(answerId);
 		voteStats.setType(type);
+
 		QueryWrapper<VoteStats> query = new QueryWrapper<>(voteStats);
 		return voteStatsService.getOne(query);
-	}
-
-	private Set<String> deserializeSet(String json) {
-		String strVoters = Optional.ofNullable(json).orElse("");
-		Gson gson = new Gson();
-		return  (Set<String>) Optional.ofNullable(gson.fromJson(strVoters, new TypeToken<Set<String>>(){}.getType()) )
-				.orElse(new HashSet<String>(0));
-	}
-
-	private boolean alreadyVoted(VoteStatsVO vote) {
-		return true;
 	}
 
 }
