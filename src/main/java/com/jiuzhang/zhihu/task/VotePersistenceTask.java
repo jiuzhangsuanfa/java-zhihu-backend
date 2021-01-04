@@ -3,11 +3,9 @@ package com.jiuzhang.zhihu.task;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.jiuzhang.zhihu.common.enums.VoteTypeEnum;
 import com.jiuzhang.zhihu.constant.Constants;
-import com.jiuzhang.zhihu.entity.Answer;
 import com.jiuzhang.zhihu.entity.VoteStats;
-import com.jiuzhang.zhihu.service.IAnswerService;
 import com.jiuzhang.zhihu.service.IVoteStatsService;
-import com.jiuzhang.zhihu.service.vote.IVoteStrategyService;
+import com.jiuzhang.zhihu.service.vote.VoteStatsCacheService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -32,6 +30,9 @@ public class VotePersistenceTask {
     private IVoteStatsService voteStatsService;
 
     @Autowired
+    private VoteStatsCacheService voteStatsCacheService;
+
+    @Autowired
     private RedisTemplate redisTemplate;
 
     /**
@@ -42,13 +43,14 @@ public class VotePersistenceTask {
 
         log.info("开始定时批量点赞入库");
 
-        // 投票被更改过的 answer ids
-        Set<Long> votedAnswerIds = redisTemplate.opsForSet().members(VOTED_ANSWERS);
+        for (VoteTypeEnum typeEnum : VoteTypeEnum.values()) {
 
-        // 计数 & 投票用户列表
-        for (Long answerId : votedAnswerIds) {
+            // 投票被更改过的 answer ids
+            String key_voted_answers = VOTED_ANSWERS + typeEnum.getCategory();
+            Set<Long> votedAnswerIds = redisTemplate.opsForSet().members(key_voted_answers);
 
-            for (VoteTypeEnum typeEnum : VoteTypeEnum.values()) {
+            // 计数 & 投票用户列表
+            for (Long answerId : votedAnswerIds) {
                 String countKey = Constants.ANSWER_VOTE_COUNT + answerId + VoteTypeEnum.UPVOTE.getCategory();
                 String voterIdsKey = Constants.ANSWER_VOTER_SET + answerId + VoteTypeEnum.UPVOTE.getCategory();
 
@@ -66,16 +68,20 @@ public class VotePersistenceTask {
                     upVoteStats = new VoteStats(answerId, type);
                 }
                 upVoteStats.setVoteCount(count);
-                upVoteStats.setVoteUsers(voterIds.toString());
+                upVoteStats.setVoteUsers(setToString(voterIds));
 
                 // 保存记录
                 boolean rv = voteStatsService.saveOrUpdate(upVoteStats);
                 if (rv) {
                     // 移除更新记录
-                    redisTemplate.opsForSet().remove(VOTED_ANSWERS, answerId);
+                    redisTemplate.opsForSet().remove(VOTED_ANSWERS+type, answerId);
                     redisTemplate.delete(countKey);
                     redisTemplate.delete(voterIdsKey);
                     log.error("点赞定时批量入库成功");
+
+                    // 重新加载 计数器
+                    voteStatsCacheService.loadVoteStats(answerId, type);
+
                 } else {
                     log.error("点赞定时批量入库失败");
                 }
@@ -84,4 +90,9 @@ public class VotePersistenceTask {
         } // for(;;)
 
     }
+
+    private String setToString(Set<String> ids) {
+        return String.join(",", ids);
+    }
+
 }

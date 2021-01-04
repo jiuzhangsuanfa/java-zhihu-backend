@@ -55,7 +55,7 @@ public class Answer implements Serializable {
 	 */
 	private Long questionId;
 	/**
-	 * 排名：0-n
+	 * 评分
 	 */
 	private Double score;
 	/**

@@ -10,5 +10,5 @@ public class Constants {
 
     public static final String VOTED_ANSWERS = "ZHIHU:ANSWER:VOTED:";
     public static final String ANSWER_VOTER_SET = "ZHIHU:ANSWER:VOTERS:";
-    public static final String ANSWER_VOTE_COUNT = "ZHIHU:ANSWER:VOTE:COUNT";
+    public static final String ANSWER_VOTE_COUNT = "ZHIHU:ANSWER:VOTE:COUNT:";
 }

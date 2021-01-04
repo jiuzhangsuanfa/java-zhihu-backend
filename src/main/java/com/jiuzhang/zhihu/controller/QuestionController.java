@@ -48,7 +48,7 @@ public class QuestionController {
 	private ApplicationEventPublisher applicationEventPublisher;
 
 	/**
-	 * 详情
+	 * 问题详情
 	 */
 	@GetMapping("/{id}")
 	public R<Question> detail(@PathVariable(name = "id") Long id) {
@@ -56,6 +56,43 @@ public class QuestionController {
 		Question detail = questionService.getOne(Condition.getQueryWrapper(query));
 		return R.data(detail);
 	}
+
+	/**
+	 * 问题列表分页
+	 */
+	@GetMapping("/")
+	public R<IPage<QuestionVO>> page(QuestionVO question, Query query) {
+		IPage<QuestionVO> pages = questionService.selectQuestionPage(Condition.getPage(query), question);
+		return R.data(pages);
+	}
+
+	/**
+	 * 新增问题
+	 */
+	@PostMapping("/")
+	public R<Boolean> save(@RequestBody Question question) {
+		QuestionChangeEvent event = new QuestionChangeEvent(null);
+		applicationEventPublisher.publishEvent(event);
+
+		return R.status(questionService.save(question));
+	}
+
+	/**
+	 * 修改问题
+	 */
+	@PutMapping("/")
+	public R<Boolean> update(@RequestBody Question question) {
+		return R.status(questionService.updateById(question));
+	}
+
+	/**
+	 * 删除问题
+	 */
+	@DeleteMapping("/{id}")
+	public R<Boolean> remove(@PathVariable(name = "id") Long id) {
+		return R.status(questionService.removeById(id));
+	}
+
 
 //	/**
 //	 * 问题列表
@@ -66,49 +103,11 @@ public class QuestionController {
 //		return R.data(pages);
 //	}
 
-	/**
-	 * 自定义分页 
-	 */
-	@GetMapping("/")
-	public R<IPage<QuestionVO>> page(QuestionVO question, Query query) {
-		IPage<QuestionVO> pages = questionService.selectQuestionPage(Condition.getPage(query), question);
-		return R.data(pages);
-	}
-
-	/**
-	 * 新增 （发布问题）
-	 */
-	@PostMapping("/")
-	public R save(@RequestBody Question question) {
-		QuestionChangeEvent event = new QuestionChangeEvent(null);
-		applicationEventPublisher.publishEvent(event);
-
-		return R.status(questionService.save(question));
-	}
-
-	/**
-	 * 修改 
-	 */
-	@PostMapping("/update")
-	public R update(@RequestBody Question question) {
-		return R.status(questionService.updateById(question));
-	}
-
-	/**
-	 * 新增或修改 
-	 */
-	@PutMapping("/")
-	public R submit(@RequestBody Question question) {
-		return R.status(questionService.saveOrUpdate(question));
-	}
-
-
-	/**
-	 * 删除 
-	 */
-	@DeleteMapping("/{id}")
-	public R remove(@PathVariable(name = "id") Long id) {
-		return R.status(questionService.removeById(id));
-	}
-
+//	/**
+//	 * 新增或修改
+//	 */
+//	@PutMapping("/submit")
+//	public R submit(@RequestBody Question question) {
+//		return R.status(questionService.saveOrUpdate(question));
+//	}
 }

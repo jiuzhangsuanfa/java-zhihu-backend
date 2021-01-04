@@ -16,9 +16,7 @@
  */
 package com.jiuzhang.zhihu.service.vote;
 
-
 import com.jiuzhang.zhihu.entity.vo.VoteVO;
-import com.jiuzhang.zhihu.service.IVoteStatsService;
 
 /**
  *  服务类
@@ -26,7 +24,7 @@ import com.jiuzhang.zhihu.service.IVoteStatsService;
  * @author 作者
  * @since 2020-11-12
  */
-public interface IVoteStrategyService {
+public interface IVoteStrategyService  {
 
     /**
      * 用户对答案是否已投票
@@ -61,5 +59,4 @@ public interface IVoteStrategyService {
      * @return
      */
     boolean cancelVote(VoteVO vote);
-
 }
