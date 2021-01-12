@@ -18,12 +18,19 @@ package com.jiuzhang.zhihu.controller;
 
 import com.jiuzhang.zhihu.common.api.R;
 import com.jiuzhang.zhihu.entity.vo.VoteVO;
-import com.jiuzhang.zhihu.service.IVoteStatsService;
 import com.jiuzhang.zhihu.service.vote.IVoteStrategyService;
-import lombok.AllArgsConstructor;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import lombok.AllArgsConstructor;
 
 /**
  *  控制器
@@ -33,7 +40,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @AllArgsConstructor
-@RequestMapping("/votes")
+@RequestMapping("votes")
 public class VoteController {
 
 //	@Autowired
@@ -48,7 +55,7 @@ public class VoteController {
 	/**
 	 * 提交/取消 赞踩
 	 */
-	@RequestMapping("/checkVote")
+	@RequestMapping("checkVote")
 	public R<Boolean> alreadyVote(@RequestParam Long answerId,
 						 @RequestParam int voteType,
 						 @RequestParam String userId) {
@@ -58,7 +65,7 @@ public class VoteController {
 	/**
 	 * 提交/取消 赞踩
 	 */
-	@GetMapping("/")
+	@GetMapping
 	public R<Integer> getCount(@RequestParam Long answerId,
 					  @RequestParam int voteType) {
 		return R.data(voteStrategyService.getCount(answerId, voteType));
@@ -67,7 +74,7 @@ public class VoteController {
 	/**
 	 * 提交 赞或踩
 	 */
-	@PostMapping("/")
+	@PostMapping
 	public R<Boolean> submitVote(@RequestBody VoteVO vote) {
 		return R.status(voteStrategyService.submitVote(vote));
 	}
@@ -75,7 +82,7 @@ public class VoteController {
 	/**
 	 * 提交 赞或踩
 	 */
-	@DeleteMapping("/")
+	@DeleteMapping
 	public R<Boolean> cancelVote(@RequestBody VoteVO vote) {
 		return R.status(voteStrategyService.cancelVote(vote));
 	}
@@ -83,7 +90,7 @@ public class VoteController {
 //	/**
 //	 * 提交/取消 赞踩
 //	 */
-//	@PostMapping("/")
+//	@PostMapping
 //	public R vote(@RequestBody VoteVO vote) {
 //		return R.status(voteStrategyService.vote(vote));
 //	}
@@ -93,7 +100,7 @@ public class VoteController {
 //	/**
 //	 * 详情
 //	 */
-//	@GetMapping("/detail")
+//	@GetMapping("detail")
 //	public R<VoteStats> detail(VoteStats voteStats) {
 //		VoteStats detail = voteStatsService.getOne(Condition.getQueryWrapper(voteStats));
 //		return R.data(detail);
@@ -102,7 +109,7 @@ public class VoteController {
 //	/**
 //	 * 分页
 //	 */
-//	@GetMapping("/list")
+//	@GetMapping("list")
 //	public R<IPage<VoteStats>> list(VoteStats voteStats, Query query) {
 //		IPage<VoteStats> pages = voteStatsService.page(Condition.getPage(query), Condition.getQueryWrapper(voteStats));
 //		return R.data(pages);
@@ -111,7 +118,7 @@ public class VoteController {
 //	/**
 //	 * 新增
 //	 */
-//	@PostMapping("/save")
+//	@PostMapping("save")
 //	public R save(@RequestBody VoteStats voteStats) {
 //		return R.status(voteStatsService.save(voteStats));
 //	}
@@ -119,7 +126,7 @@ public class VoteController {
 //	/**
 //	 * 修改
 //	 */
-//	@PostMapping("/update")
+//	@PostMapping("update")
 //	public R update(@RequestBody VoteStats voteStats) {
 //		return R.status(voteStatsService.updateById(voteStats));
 //	}
@@ -127,7 +134,7 @@ public class VoteController {
 //	/**
 //	 * 新增或修改
 //	 */
-//	@PostMapping("/submit")
+//	@PostMapping("submit")
 //	public R submit(@RequestBody VoteStats voteStats) {
 //		return R.status(voteStatsService.saveOrUpdate(voteStats));
 //	}
@@ -135,7 +142,7 @@ public class VoteController {
 //	/**
 //	 * 删除
 //	 */
-//	@PostMapping("/remove")
+//	@PostMapping("remove")
 //	public R remove(@RequestParam String ids) {
 //		return R.status(voteStatsService.removeByIds(Func.toLongList(ids)));
 //	}
@@ -143,7 +150,7 @@ public class VoteController {
 	/**
 	 * 自定义分页
 	 */
-//	@GetMapping("/page")
+//	@GetMapping("page")
 //	public R<IPage<VoteStatsVO>> page(VoteStatsVO vote, Query query) {
 //		IPage<VoteStatsVO> pages = voteStrategyService.selectVotePage(Condition.getPage(query), vote);
 //		return R.data(pages);

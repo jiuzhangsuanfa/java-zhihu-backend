@@ -17,15 +17,15 @@
 package com.jiuzhang.zhihu.controller;
 
 import com.jiuzhang.zhihu.common.api.R;
-import com.jiuzhang.zhihu.service.search.IndexService;
 import com.jiuzhang.zhihu.util.MinioUtil;
-import lombok.AllArgsConstructor;
-import org.elasticsearch.search.SearchHits;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+
+import lombok.AllArgsConstructor;
 
 /**
  *  资源控制器
@@ -35,7 +35,7 @@ import org.springframework.web.multipart.MultipartFile;
  */
 @RestController
 @AllArgsConstructor
-@RequestMapping("/resources")
+@RequestMapping("resources")
 public class ResourceController {
 
 	private MinioUtil minioUtil;
@@ -43,7 +43,7 @@ public class ResourceController {
 	/**
 	 * 索引全部Question
 	 */
-	@PostMapping("/")
+	@PostMapping
 	public void get() {
 //		minioUtil.
 //		return null;
@@ -52,7 +52,7 @@ public class ResourceController {
 	/**
 	 * 搜索Question
 	 */
-	@GetMapping("/")
+	@GetMapping
 	public R<String> upload(MultipartFile file) {
 		minioUtil.putObject("default", file, "name");
 		return R.data("path");

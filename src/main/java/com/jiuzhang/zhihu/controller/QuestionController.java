@@ -17,20 +17,28 @@
 package com.jiuzhang.zhihu.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.jiuzhang.zhihu.common.api.R;
 import com.jiuzhang.zhihu.common.enums.OperationTypeEnum;
-import com.jiuzhang.zhihu.entity.event.QuestionChangeEvent;
-import lombok.AllArgsConstructor;
-
 import com.jiuzhang.zhihu.common.support.Condition;
 import com.jiuzhang.zhihu.common.support.Query;
-import com.jiuzhang.zhihu.common.api.R;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.web.bind.annotation.*;
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.jiuzhang.zhihu.entity.Question;
+import com.jiuzhang.zhihu.entity.event.QuestionChangeEvent;
 import com.jiuzhang.zhihu.entity.vo.QuestionVO;
 import com.jiuzhang.zhihu.service.IQuestionService;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import lombok.AllArgsConstructor;
 
 /**
  *  控制器
@@ -40,7 +48,7 @@ import com.jiuzhang.zhihu.service.IQuestionService;
  */
 @RestController
 @AllArgsConstructor
-@RequestMapping("/questions")
+@RequestMapping("questions")
 public class QuestionController {
 
 	private final IQuestionService questionService;
@@ -51,7 +59,7 @@ public class QuestionController {
 	/**
 	 * 问题详情
 	 */
-	@GetMapping("/{id}")
+	@GetMapping("{id}")
 	public R<Question> detail(@PathVariable(name = "id") Long id) {
 		Question query = new Question(id);
 		Question detail = questionService.getOne(Condition.getQueryWrapper(query));
@@ -61,7 +69,7 @@ public class QuestionController {
 	/**
 	 * 问题列表分页
 	 */
-	@GetMapping("/")
+	@GetMapping
 	public R<IPage<QuestionVO>> page(QuestionVO question, Query query) {
 		IPage<QuestionVO> pages = questionService.selectQuestionPage(Condition.getPage(query), question);
 		return R.data(pages);
@@ -70,7 +78,7 @@ public class QuestionController {
 	/**
 	 * 新增问题
 	 */
-	@PostMapping("/")
+	@PostMapping
 	public R<Boolean> save(@RequestBody Question question) {
 
 		boolean rv = questionService.save(question);
@@ -89,7 +97,7 @@ public class QuestionController {
 	/**
 	 * 修改问题
 	 */
-	@PutMapping("/")
+	@PutMapping
 	public R<Boolean> update(@RequestBody Question question) {
 
 		boolean rv = questionService.updateById(question);
@@ -107,7 +115,7 @@ public class QuestionController {
 	/**
 	 * 删除问题
 	 */
-	@DeleteMapping("/{id}")
+	@DeleteMapping("{id}")
 	public R<Boolean> remove(@PathVariable(name = "id") Long id) {
 
 		boolean rv = questionService.removeById(id);
@@ -126,7 +134,7 @@ public class QuestionController {
 //	/**
 //	 * 问题列表
 //	 */
-//	@GetMapping("/")
+//	@GetMapping
 //	public R<IPage<Question>> list(Question question, Query query) {
 //		IPage<Question> pages = questionService.page(Condition.getPage(query), Condition.getQueryWrapper(question));
 //		return R.data(pages);
@@ -135,7 +143,7 @@ public class QuestionController {
 //	/**
 //	 * 新增或修改
 //	 */
-//	@PutMapping("/submit")
+//	@PutMapping("submit")
 //	public R submit(@RequestBody Question question) {
 //		return R.status(questionService.saveOrUpdate(question));
 //	}
