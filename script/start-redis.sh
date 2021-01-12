@@ -1,5 +1,6 @@
-#!/bin/bash
+#!/usr/bin/env bash
 docker run -d \
-  --name redis-zhihu \
+  --name zhihu-redis \
   -p 6379:6379 \
+  -v zhihu-redis:/data \
   redis:6.0.9
