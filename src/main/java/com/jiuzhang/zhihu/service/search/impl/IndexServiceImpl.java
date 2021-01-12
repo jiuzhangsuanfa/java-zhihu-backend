@@ -5,7 +5,9 @@ import com.jiuzhang.zhihu.entity.Question;
 import com.jiuzhang.zhihu.service.IQuestionService;
 import com.jiuzhang.zhihu.service.search.IndexService;
 import org.elasticsearch.action.delete.DeleteRequest;
+import org.elasticsearch.action.delete.DeleteResponse;
 import org.elasticsearch.action.index.IndexRequest;
+import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.RequestOptions;
@@ -78,11 +80,12 @@ public class IndexServiceImpl implements IndexService {
         DeleteRequest request = new DeleteRequest("zhihu_question");
         request.id(String.valueOf(questionId));
         try {
-            restHighLevelClient.delete(request, RequestOptions.DEFAULT);
+            DeleteResponse response = restHighLevelClient.delete(request, RequestOptions.DEFAULT);
+            return response.getResult().hashCode();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return 0;
+        return -1;
     }
 
 
@@ -99,7 +102,7 @@ public class IndexServiceImpl implements IndexService {
         request.source(JSON.toJSONString(question), XContentType.JSON);
 
         try {
-            restHighLevelClient.index(request, RequestOptions.DEFAULT);
+            IndexResponse response = restHighLevelClient.index(request, RequestOptions.DEFAULT);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

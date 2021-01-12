@@ -16,13 +16,14 @@
  */
 package com.jiuzhang.zhihu.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.jiuzhang.zhihu.common.enums.OperationTypeEnum;
 import com.jiuzhang.zhihu.entity.event.QuestionChangeEvent;
 import lombok.AllArgsConstructor;
 
 import com.jiuzhang.zhihu.common.support.Condition;
 import com.jiuzhang.zhihu.common.support.Query;
 import com.jiuzhang.zhihu.common.api.R;
-import com.jiuzhang.zhihu.common.Func;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.web.bind.annotation.*;
@@ -45,7 +46,7 @@ public class QuestionController {
 	private final IQuestionService questionService;
 
 	@Autowired
-	private ApplicationEventPublisher applicationEventPublisher;
+	private ApplicationEventPublisher eventPublisher;
 
 	/**
 	 * 问题详情
@@ -71,10 +72,18 @@ public class QuestionController {
 	 */
 	@PostMapping("/")
 	public R<Boolean> save(@RequestBody Question question) {
-		QuestionChangeEvent event = new QuestionChangeEvent(null);
-		applicationEventPublisher.publishEvent(event);
 
-		return R.status(questionService.save(question));
+		boolean rv = questionService.save(question);
+
+		// 发出Question更新事件
+		if (rv) {
+			Question q = questionService.getOne(new QueryWrapper<>(question));
+			QuestionChangeEvent event = new QuestionChangeEvent(q.getId(), OperationTypeEnum.CREATE.getCode());
+			eventPublisher.publishEvent(event);
+		}
+
+		// 保存入库
+		return R.status(rv);
 	}
 
 	/**
@@ -82,7 +91,17 @@ public class QuestionController {
 	 */
 	@PutMapping("/")
 	public R<Boolean> update(@RequestBody Question question) {
-		return R.status(questionService.updateById(question));
+
+		boolean rv = questionService.updateById(question);
+
+		// 发出Question更新事件
+		if (rv) {
+			QuestionChangeEvent event = new QuestionChangeEvent(question.getId(),
+					OperationTypeEnum.MODIFY.getCode());
+			eventPublisher.publishEvent(event);
+		}
+
+		return R.status(rv);
 	}
 
 	/**
@@ -90,7 +109,17 @@ public class QuestionController {
 	 */
 	@DeleteMapping("/{id}")
 	public R<Boolean> remove(@PathVariable(name = "id") Long id) {
-		return R.status(questionService.removeById(id));
+
+		boolean rv = questionService.removeById(id);
+
+		// 发出Question删除事件
+		if (rv) {
+			QuestionChangeEvent event = new QuestionChangeEvent(id,
+					OperationTypeEnum.REMOVE.getCode());
+			eventPublisher.publishEvent(event);
+		}
+
+		return R.status(rv);
 	}
 
 

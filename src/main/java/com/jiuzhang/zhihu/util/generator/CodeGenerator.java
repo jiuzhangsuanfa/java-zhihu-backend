@@ -61,7 +61,7 @@ public class CodeGenerator {
             }
         });
 
-//        cfg.setFileOutConfigList(focList);
+        cfg.setFileOutConfigList(focList);
 
 
         TemplateConfig templateConfig = getTemplateConfig();
