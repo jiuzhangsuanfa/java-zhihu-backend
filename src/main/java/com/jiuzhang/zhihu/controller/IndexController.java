@@ -18,11 +18,12 @@ package com.jiuzhang.zhihu.controller;
 
 import com.jiuzhang.zhihu.common.api.R;
 import com.jiuzhang.zhihu.service.search.IndexService;
-import lombok.AllArgsConstructor;
+
 import org.elasticsearch.search.SearchHits;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import lombok.AllArgsConstructor;
 
 /**
  *  控制器
@@ -32,7 +33,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @AllArgsConstructor
-@RequestMapping("/index")
+@RequestMapping("index")
 public class IndexController {
 
 	private final IndexService indexService;
@@ -40,7 +41,7 @@ public class IndexController {
 	/**
 	 * 搜索Question
 	 */
-	@RequestMapping("/search")
+	@RequestMapping("search")
 	public SearchHits search(String keyword) {
 		return indexService.search(keyword);
 	}
@@ -48,7 +49,7 @@ public class IndexController {
 	/**
 	 * 索引全部Question
 	 */
-	@RequestMapping("/indexAll")
+	@RequestMapping("indexAll")
 	public R<String> indexAll() {
 		indexService.indexAll();
 		return null;
@@ -57,7 +58,7 @@ public class IndexController {
 	/**
 	 * 索引全部Question
 	 */
-	@RequestMapping("/index")
+	@RequestMapping("index")
 	public R<String> index(Long questionId) {
 		indexService.index(questionId);
 		return R.data(null);
@@ -66,7 +67,7 @@ public class IndexController {
 	/**
 	 * 索引全部Question
 	 */
-	@RequestMapping("/delete")
+	@RequestMapping("delete")
 	public R<String> delete(Long questionId) {
 		indexService.delete(questionId);
 		return R.data(null);
