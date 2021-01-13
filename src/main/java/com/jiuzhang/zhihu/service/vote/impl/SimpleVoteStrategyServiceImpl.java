@@ -20,6 +20,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.jiuzhang.zhihu.entity.VoteStats;
 import com.jiuzhang.zhihu.entity.vo.VoteVO;
 import com.jiuzhang.zhihu.service.IVoteStatsService;
+import com.jiuzhang.zhihu.service.vote.IVoteStrategyService;
 import com.jiuzhang.zhihu.util.SetUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +39,7 @@ import java.util.Set;
 @Slf4j
 @Primary
 @Service("simpleVoteStrategyService")
-public class SimpleVoteStrategyServiceImpl extends AbstractVoteStrategyServiceImpl {
+public class SimpleVoteStrategyServiceImpl implements IVoteStrategyService {
 
 	@Autowired
 	private IVoteStatsService voteStatsService;
