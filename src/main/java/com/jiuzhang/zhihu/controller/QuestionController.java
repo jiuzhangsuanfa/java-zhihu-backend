@@ -23,12 +23,16 @@ import com.jiuzhang.zhihu.common.enums.OperationTypeEnum;
 import com.jiuzhang.zhihu.common.support.Condition;
 import com.jiuzhang.zhihu.common.support.Query;
 import com.jiuzhang.zhihu.entity.Question;
-import com.jiuzhang.zhihu.entity.event.QuestionChangeEvent;
+import com.jiuzhang.zhihu.entity.event.QuestionAddedEvent;
+import com.jiuzhang.zhihu.entity.event.QuestionGenericEvent;
+import com.jiuzhang.zhihu.entity.event.QuestionRemovedEvent;
+import com.jiuzhang.zhihu.entity.event.QuestionUpdatedEvent;
 import com.jiuzhang.zhihu.entity.vo.QuestionVO;
 import com.jiuzhang.zhihu.service.IQuestionService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.util.StopWatch;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -86,11 +90,9 @@ public class QuestionController {
 		// 发出Question更新事件
 		if (rv) {
 			Question q = questionService.getOne(new QueryWrapper<>(question));
-			QuestionChangeEvent event = new QuestionChangeEvent(q.getId(), OperationTypeEnum.CREATE.getCode());
-			eventPublisher.publishEvent(event);
+			eventPublisher.publishEvent(new QuestionAddedEvent(q.getId()));
 		}
 
-		// 保存入库
 		return R.status(rv);
 	}
 
@@ -104,9 +106,7 @@ public class QuestionController {
 
 		// 发出Question更新事件
 		if (rv) {
-			QuestionChangeEvent event = new QuestionChangeEvent(question.getId(),
-					OperationTypeEnum.MODIFY.getCode());
-			eventPublisher.publishEvent(event);
+			eventPublisher.publishEvent(new QuestionUpdatedEvent(question.getId()));
 		}
 
 		return R.status(rv);
@@ -118,13 +118,12 @@ public class QuestionController {
 	@DeleteMapping("{id}")
 	public R<Boolean> remove(@PathVariable(name = "id") Long id) {
 
+		// 从DB中删除Question
 		boolean rv = questionService.removeById(id);
 
 		// 发出Question删除事件
 		if (rv) {
-			QuestionChangeEvent event = new QuestionChangeEvent(id,
-					OperationTypeEnum.REMOVE.getCode());
-			eventPublisher.publishEvent(event);
+			eventPublisher.publishEvent(new QuestionRemovedEvent(id));
 		}
 
 		return R.status(rv);
@@ -147,4 +146,15 @@ public class QuestionController {
 //	public R submit(@RequestBody Question question) {
 //		return R.status(questionService.saveOrUpdate(question));
 //	}
+
+	public static void main(String[] args) throws InterruptedException {
+		StopWatch stopWatch = new StopWatch("stopwatch test");
+
+		stopWatch.start("第一次开始");
+		Thread.sleep(1000);
+		stopWatch.stop();
+
+		System.out.println(stopWatch.prettyPrint());
+	}
+
 }

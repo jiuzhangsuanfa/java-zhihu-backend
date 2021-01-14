@@ -28,49 +28,47 @@ import lombok.AllArgsConstructor;
 /**
  *  控制器
  *
- * @author 作者
+ * @author 九章算法
  * @since 2020-11-09
  */
-@RestController
 @AllArgsConstructor
+@RestController
 @RequestMapping("index")
 public class IndexController {
 
 	private final IndexService indexService;
 
-	/**
-	 * 搜索Question
-	 */
+	/** 搜索Question */
 	@RequestMapping("search")
 	public SearchHits search(String keyword) {
 		return indexService.search(keyword);
 	}
-
-	/**
-	 * 索引全部Question
-	 */
-	@RequestMapping("indexAll")
-	public R<String> indexAll() {
-		indexService.indexAll();
-		return null;
-	}
-
-	/**
-	 * 索引全部Question
-	 */
-	@RequestMapping("index")
-	public R<String> index(Long questionId) {
-		indexService.index(questionId);
-		return R.data(null);
-	}
-
-	/**
-	 * 索引全部Question
-	 */
-	@RequestMapping("delete")
-	public R<String> delete(Long questionId) {
-		indexService.delete(questionId);
-		return R.data(null);
-	}
-
 }
+//	/**
+//	 * 索引全部Question
+//	 */
+//	@RequestMapping("indexAll")
+//	public R<String> indexAll() {
+//		indexService.indexAll();
+//		return null;
+//	}
+//
+//	/**
+//	 * 索引全部Question
+//	 */
+//	@RequestMapping("index")
+//	public R<String> index(Long questionId) {
+//		indexService.index(questionId);
+//		return R.data(null);
+//	}
+//
+//	/**
+//	 * 索引全部Question
+//	 */
+//	@RequestMapping("delete")
+//	public R<String> delete(Long questionId) {
+//		indexService.delete(questionId);
+//		return R.data(null);
+//	}
+//
+//}

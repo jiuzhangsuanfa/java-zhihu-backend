@@ -1,8 +1,9 @@
 package com.jiuzhang.zhihu.listener;
 
-import com.jiuzhang.zhihu.common.enums.OperationTypeEnum;
-import com.jiuzhang.zhihu.entity.dto.QuestionDTO;
-import com.jiuzhang.zhihu.entity.event.QuestionChangeEvent;
+import com.jiuzhang.zhihu.entity.event.QuestionAddedEvent;
+import com.jiuzhang.zhihu.entity.event.QuestionGenericEvent;
+import com.jiuzhang.zhihu.entity.event.QuestionRemovedEvent;
+import com.jiuzhang.zhihu.entity.event.QuestionUpdatedEvent;
 import com.jiuzhang.zhihu.service.search.IndexService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,25 +15,31 @@ import org.springframework.stereotype.Component;
  */
 @Slf4j
 @Component
-public class QuestionChangeListener implements ApplicationListener<QuestionChangeEvent> {
+public class QuestionChangeListener implements ApplicationListener<QuestionGenericEvent> {
 
     @Autowired
     private IndexService indexService;
 
     @Override
-    public void onApplicationEvent(QuestionChangeEvent event) {
-        int ops = event.getOperation();
-        Long qid = (Long) event.getSource();
-
-        if (OperationTypeEnum.CREATE.getCode() == ops
-            || OperationTypeEnum.MODIFY.getCode() == ops) {
-            indexService.index(qid);
-
-        } else if (OperationTypeEnum.REMOVE.getCode() == ops) {
-            indexService.delete(qid);
-
-        } else {
-            log.error("invalid operation event type: " + ops);
+    public void onApplicationEvent(QuestionGenericEvent event) {
+        if (event instanceof QuestionAddedEvent) {
+            this.onQuestionAddedEvent((QuestionAddedEvent)event);
+        } else if (event instanceof QuestionUpdatedEvent) {
+            this.onQuestionUpdatedEvent((QuestionUpdatedEvent)event);
+        } else if (event instanceof QuestionRemovedEvent) {
+            this.onQuestionRemovedEvent((QuestionRemovedEvent)event);
         }
+    }
+
+    private void onQuestionAddedEvent(QuestionAddedEvent event) {
+        indexService.index((Long) event.getSource());
+    }
+
+    private void onQuestionUpdatedEvent(QuestionUpdatedEvent event) {
+        indexService.index((Long) event.getSource());
+    }
+
+    private void onQuestionRemovedEvent(QuestionRemovedEvent event) {
+        indexService.delete((Long) event.getSource());
     }
 }

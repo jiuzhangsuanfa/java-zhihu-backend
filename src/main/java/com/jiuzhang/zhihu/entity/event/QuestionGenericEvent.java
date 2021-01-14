@@ -1,17 +1,16 @@
 package com.jiuzhang.zhihu.entity.event;
 
-import lombok.Data;
 import org.springframework.context.ApplicationEvent;
 
-public class QuestionChangeEvent extends ApplicationEvent {
+public class QuestionGenericEvent extends ApplicationEvent {
 
     private int operation;
 
-    public QuestionChangeEvent(Object source) {
+    public QuestionGenericEvent(Object source) {
         super(source);
     }
 
-    public QuestionChangeEvent(Object source, int operation) {
+    public QuestionGenericEvent(Object source, int operation) {
         super(source);
         this.operation = operation;
     }
