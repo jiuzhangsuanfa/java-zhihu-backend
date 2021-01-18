@@ -13,7 +13,7 @@ public enum VoteTypeEnum {
 
     final String name;
 
-    final int category;
+    final int type;
 
     /**
      * 匹配枚举值

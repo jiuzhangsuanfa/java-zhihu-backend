@@ -57,7 +57,7 @@ public class CachedVoteStrategyServiceImpl implements IVoteStrategyService {
 
 
 	// --------------------------- 加载器 ---------------------------
-	public void loadStatsIfAbsent(VoteVO vote) {
+	private void loadStatsIfAbsent(VoteVO vote) {
 		Long answerId = vote.getAnswerId();
 		int type = vote.getType();
 		boolean isLoaded = cacheService.isVoteStatsLoaded(answerId, type);

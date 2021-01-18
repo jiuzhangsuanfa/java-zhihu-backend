@@ -43,17 +43,13 @@ import lombok.AllArgsConstructor;
 @RequestMapping("votes")
 public class VoteController {
 
-//	@Autowired
-//	@Qualifier("voteStatsService")
-//	private final IVoteStatsService voteStatsService;
-
 	@Autowired
 	@Qualifier("simpleVoteStrategyService")
 	private final IVoteStrategyService voteStrategyService;
 
 	// ------------------------------- 赞、踩（多种策略实现）-------------------------------
 	/**
-	 * 提交/取消 赞踩
+	 * 是否已经 赞踩
 	 */
 	@RequestMapping("checkVote")
 	public R<Boolean> alreadyVote(@RequestParam Long answerId,
@@ -63,7 +59,7 @@ public class VoteController {
 	}
 
 	/**
-	 * 提交/取消 赞踩
+	 * 赞踩 数
 	 */
 	@GetMapping
 	public R<Integer> getCount(@RequestParam Long answerId,
@@ -80,7 +76,7 @@ public class VoteController {
 	}
 
 	/**
-	 * 提交 赞或踩
+	 * 取消 赞或踩
 	 */
 	@DeleteMapping
 	public R<Boolean> cancelVote(@RequestBody VoteVO vote) {

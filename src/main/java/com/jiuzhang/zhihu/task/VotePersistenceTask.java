@@ -39,10 +39,10 @@ public class VotePersistenceTask {
 
         for (VoteTypeEnum typeEnum : VoteTypeEnum.values()) {
 
-            int type = typeEnum.getCategory();
+            int type = typeEnum.getType();
 
             // 投票被更改过的 answer ids
-            Set<Long> votedAnswerIds = cacheService.getAnsweredIds(typeEnum.getCategory());
+            Set<Long> votedAnswerIds = cacheService.getAnsweredIds(typeEnum.getType());
 
             // 计数 & 投票用户列表
             for (Long answerId : votedAnswerIds) {

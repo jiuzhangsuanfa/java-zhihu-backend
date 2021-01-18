@@ -54,7 +54,7 @@ public class SimpleVoteStrategyServiceImpl implements IVoteStrategyService {
 	@Override
 	public int getCount(Long answerId, int voteType) {
 		VoteStats stats = queryVoteStats(answerId, voteType);
-		return Optional.ofNullable(stats).map(item -> item.getVoteCount()).orElse(0);
+		return Optional.ofNullable(stats).map(VoteStats::getVoteCount).orElse(0);
 	}
 
 	@Override
@@ -78,9 +78,9 @@ public class SimpleVoteStrategyServiceImpl implements IVoteStrategyService {
 		}
 
 		// 保存入库
-		stats.setVoteCount(stats.getVoteCount() + 1);
 		users.add(userId);
 		stats.setVoteUsers(SetUtil.serialize(users));
+		stats.setVoteCount(stats.getVoteCount() + 1);
 
 		return voteStatsService.saveOrUpdate(stats);
 	}

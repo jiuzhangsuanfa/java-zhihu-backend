@@ -7,9 +7,8 @@
         <result column="id" property="id"/>
         <result column="content" property="content"/>
         <result column="user_id" property="userId"/>
-        <result column="upvote_count" property="upvoteCount"/>
-        <result column="downvote_count" property="downvoteCount"/>
-        <result column="ranking" property="ranking"/>
+        <result column="question_id" property="questionId"/>
+        <result column="score" property="score"/>
         <result column="is_deleted" property="isDeleted"/>
         <result column="create_person" property="createPerson"/>
         <result column="create_time" property="createTime"/>

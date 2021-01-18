@@ -63,8 +63,8 @@ public class AnswerScoringTask {
     }
 
     private void score(Answer answer) {
-        int upVoteCount = voteService.getCount(answer.getId(), VoteTypeEnum.UPVOTE.getCategory());
-        int downVoteCount = voteService.getCount(answer.getId(), VoteTypeEnum.DOWNVOTE.getCategory());
+        int upVoteCount = voteService.getCount(answer.getId(), VoteTypeEnum.UPVOTE.getType());
+        int downVoteCount = voteService.getCount(answer.getId(), VoteTypeEnum.DOWNVOTE.getType());
 
         double score = scoreAlgorithm.score(upVoteCount, upVoteCount+downVoteCount);
         answer.setScore(score);
