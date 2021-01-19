@@ -29,7 +29,7 @@ import lombok.EqualsAndHashCode;
 /**
  * 实体类
  *
- * @author 作者
+ * @author
  * @since 2020-11-12
  */
 @Data
@@ -69,12 +69,8 @@ public class Answer implements Serializable {
 	@TableLogic
 	private Boolean isDeleted;
 
-	private String createPerson;
+	private LocalDateTime gmtCreate;
 
-	private LocalDateTime createTime;
-
-	private String updatePerson;
-
-	private LocalDateTime updateTime;
+	private LocalDateTime gmtModified;
 
 }

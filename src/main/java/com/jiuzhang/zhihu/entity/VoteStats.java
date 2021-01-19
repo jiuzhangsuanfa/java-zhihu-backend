@@ -65,14 +65,14 @@ public class VoteStats implements Serializable {
 	@TableLogic
 	private Boolean isDeleted;
 
-	private String createPerson;
+	private LocalDateTime gmtCreate;
 
-	private LocalDateTime createTime;
+	private LocalDateTime gmtModified;
 
-	private String updatePerson;
 
-	private LocalDateTime updateTime;
-
+	/**
+	 * 构造方法
+	 */
 	public VoteStats() {
 	}
 
