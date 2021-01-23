@@ -60,5 +60,5 @@ keycloak:
         - name: jack
           patterns:
             - /questions/*
-            - /answer/*
-#            - /vote/*
+            - /answers/*
+            - /votes/*
