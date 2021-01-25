@@ -1,8 +1,8 @@
-package com.jiuzhang.zhihu.service.vote.impl;
+package com.jiuzhang.zhihu.service.vote.helper.impl;
 
 import com.jiuzhang.zhihu.entity.VoteStats;
 import com.jiuzhang.zhihu.service.IVoteStatsService;
-import com.jiuzhang.zhihu.service.vote.CacheService;
+import com.jiuzhang.zhihu.service.vote.helper.CacheService;
 import com.jiuzhang.zhihu.util.SetUtil;
 import com.jiuzhang.zhihu.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,8 +67,9 @@ public class CacheServiceImpl implements CacheService {
 
             if (StringUtil.isNotBlank(voteStats.getVoteUsers())) {
                 Set<String> deserialized = SetUtil.deserialize(voteStats.getVoteUsers());
-                redisTemplate.opsForSet().add(keySet, deserialized);
+                redisTemplate.opsForSet().add(keySet, deserialized.toArray());
             }
+
         }
     }
 

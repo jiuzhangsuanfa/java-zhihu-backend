@@ -36,9 +36,9 @@ import java.util.Set;
  * @author 九章算法
  * @since 2020-11-25
  */
-@Slf4j
-@Primary
-@Service("simpleVoteStrategyService")
+//@Slf4j
+//@Primary
+//@Service("simpleVoteStrategyService")
 public class SimpleVoteStrategyServiceImpl implements IVoteStrategyService {
 
 	@Autowired
@@ -80,6 +80,10 @@ public class SimpleVoteStrategyServiceImpl implements IVoteStrategyService {
 		// 保存入库
 		users.add(userId);
 		stats.setVoteUsers(SetUtil.serialize(users));
+
+		if (stats.getVoteCount()==null ) {
+			stats.setVoteCount(0);
+		}
 		stats.setVoteCount(stats.getVoteCount() + 1);
 
 		return voteStatsService.saveOrUpdate(stats);

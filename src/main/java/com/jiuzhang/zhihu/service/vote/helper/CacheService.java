@@ -1,6 +1,4 @@
-package com.jiuzhang.zhihu.service.vote;
-
-import com.jiuzhang.zhihu.entity.vo.VoteVO;
+package com.jiuzhang.zhihu.service.vote.helper;
 
 import java.util.Set;
 

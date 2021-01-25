@@ -59,6 +59,6 @@ keycloak:
       securityCollections:
         - name: jack
           patterns:
-            - /questions/*
-            - /answer/*
+#            - /questions/*
+#            - /answer/*
 #            - /vote/*

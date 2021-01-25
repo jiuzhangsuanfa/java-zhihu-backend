@@ -44,7 +44,7 @@ import lombok.AllArgsConstructor;
 public class VoteController {
 
 	@Autowired
-	@Qualifier("simpleVoteStrategyService")
+//	@Qualifier("simpleVoteStrategyService")
 	private final IVoteStrategyService voteStrategyService;
 
 	// ------------------------------- 赞、踩（多种策略实现）-------------------------------

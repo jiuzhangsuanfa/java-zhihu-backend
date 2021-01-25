@@ -1,10 +1,12 @@
 package com.jiuzhang.zhihu.service.vote.impl;
 
 import com.jiuzhang.zhihu.entity.vo.VoteVO;
-import com.jiuzhang.zhihu.service.vote.CacheService;
+import com.jiuzhang.zhihu.service.vote.helper.CacheService;
 import com.jiuzhang.zhihu.service.vote.IVoteStrategyService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Primary;
+import org.springframework.stereotype.Service;
 
 /**
  * 基于缓存的投票服务策略类（高并发点赞）
@@ -13,7 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @since 2020-11-25
  */
 @Slf4j
-//@Service("cachedVoteStrategyService")
+@Primary
+@Service("cachedVoteStrategyService")
 public class CachedVoteStrategyServiceImpl implements IVoteStrategyService {
 
 	@Autowired
