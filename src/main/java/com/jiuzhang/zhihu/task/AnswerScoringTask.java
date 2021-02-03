@@ -13,6 +13,7 @@ import com.jiuzhang.zhihu.service.score.ScoreAlgorithmStrategy;
 import com.jiuzhang.zhihu.service.vote.IVoteStrategyService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -24,6 +25,8 @@ import java.util.List;
 @Slf4j
 @Component
 public class AnswerScoringTask {
+
+    public static final int SIZE = 50;
 
     @Autowired
     private IQuestionService questionService;
@@ -38,37 +41,55 @@ public class AnswerScoringTask {
     private ScoreAlgorithmStrategy scoreAlgorithm;
 
 
-//    @Scheduled(cron="*/10 * * * * ?")
+    @Scheduled(cron="*/10 * * * * ?")
     public void execute() {
-        log.info("开始执行answer排名");
 
-        int current = 0, size = 50;
-        QuestionVO question = new QuestionVO();
+        int count = 0;
+        int current = 0;
         while (true) {
-            IPage<QuestionVO> page = questionService.selectQuestionPage(new Page<>(current, size), question);
-            if (page.getSize() <= 0) {
+            IPage<Question> questions = queryQuestionPage(current);
+            if (questions.getSize() <= 0) {
                 break;
             }
 
-            for (Question record : page.getRecords()) {
-                QueryWrapper qw = new QueryWrapper();
-                List<Answer> answers = answerService.list(qw);
+            // 计算 各问题所属答案的评分
+            for (Question q : questions.getRecords()) {
+                List<Answer> answers = queryAnswerList(q.getId());
                 for (Answer answer : answers) {
-                    score(answer);
+                    if (score(answer) ) count++;
                 }
             }
+
+            current++;
         }
 
-        log.info("answer排名结束");
+        log.info("answer score计算结束，重新计算" +count+ "条问题的评分。");
     }
 
-    private void score(Answer answer) {
+
+    /**
+     * 计算答案评分
+     * @param answer
+     */
+    private boolean score(Answer answer) {
         int upVoteCount = voteService.getCount(answer.getId(), VoteTypeEnum.UPVOTE.getType());
         int downVoteCount = voteService.getCount(answer.getId(), VoteTypeEnum.DOWNVOTE.getType());
 
         double score = scoreAlgorithm.score(upVoteCount, upVoteCount+downVoteCount);
         answer.setScore(score);
-        answerService.updateById(answer);
+        return answerService.updateById(answer);
+    }
+
+    // ------------------------------- 工具方法 -------------------------------
+    private IPage<Question> queryQuestionPage(int current) {
+        IPage<Question> page = new Page<>(current, SIZE);
+        return questionService.page(page, new QueryWrapper<>(new QuestionVO()));
+    }
+
+    private List<Answer> queryAnswerList(Long questionId) {
+        Answer answerQuery = new Answer();
+        answerQuery.setQuestionId(questionId);
+        return answerService.list(new QueryWrapper<>(answerQuery));
     }
 
 }
