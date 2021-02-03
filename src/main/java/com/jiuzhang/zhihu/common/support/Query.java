@@ -55,4 +55,9 @@ public class Query {
 	@ApiModelProperty(hidden = true)
 	private String descs;
 
+	public Query(Integer current, Integer size) {
+		this.current = current;
+		this.size = size;
+	}
 }
+

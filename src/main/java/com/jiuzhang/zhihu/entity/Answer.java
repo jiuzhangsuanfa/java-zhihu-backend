@@ -16,13 +16,11 @@
  */
 package com.jiuzhang.zhihu.entity;
 
-import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.*;
+
 import java.time.LocalDateTime;
-import com.baomidou.mybatisplus.annotation.TableId;
 import java.io.Serializable;
 
-import com.baomidou.mybatisplus.annotation.TableLogic;
-import com.baomidou.mybatisplus.annotation.Version;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -61,7 +59,8 @@ public class Answer implements Serializable {
 	/**
 	 * 乐观锁版本号
 	 */
-	@Version
+//	@Version
+//	@TableField(fill = FieldFill.INSERT)    //这个方便在添加的时候设置版本初始为1
 	private Integer version;
 	/**
 	* 逻辑删除 0-未删除 1-已删除

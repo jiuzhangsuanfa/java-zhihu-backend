@@ -17,7 +17,7 @@ public class WilsonScoreIntervalAlgorithm implements ScoreAlgorithmStrategy {
 
         // positive rate
         double phat = up / total;
-        double pz = 1.96;
+        double pz = 1 + 0.95;
 
         double a = phat + pz*pz / (2*total);
         double b = pz * Math.sqrt((phat * (1 - phat) + pz * pz / (4 * total)) / total);
