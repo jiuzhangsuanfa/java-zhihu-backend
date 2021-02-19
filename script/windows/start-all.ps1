@@ -1,7 +1,7 @@
 docker network create zhihu
-script\windows\start-elasticsearch.cmd
-script\windows\start-keycloak.cmd
-script\windows\start-kibana.cmd
-script\windows\start-minio.cmd
-script\windows\start-mysql.cmd
-script\windows\start-redis.cmd
+script\linux\start-elasticsearch.ps1 `
+& script\linux\start-keycloak.ps1 `
+& script\linux\start-kibana.ps1 `
+& script\linux\start-minio.ps1 `
+& script\linux\start-mysql.ps1 `
+& script\linux\start-redis.ps1
