@@ -1,22 +1,22 @@
-    /*
-    *      Copyright (c) 2018-2028, Chill Zhuang All rights reserved.
-    *
-    *  Redistribution and use in source and binary forms, with or without
-    *  modification, are permitted provided that the following conditions are met:
-    *
-    *  Redistributions of source code must retain the above copyright notice,
-    *  this list of conditions and the following disclaimer.
-    *  Redistributions in binary form must reproduce the above copyright
-    *  notice, this list of conditions and the following disclaimer in the
-    *  documentation and/or other materials provided with the distribution.
-    *  Neither the name of the dreamlu.net developer nor the names of its
-    *  contributors may be used to endorse or promote products derived from
-    *  this software without specific prior written permission.
-    *  Author: Chill 庄骞 (smallchill@163.com)
-    */
-    package com.jiuzhang.zhihu.controller;
+/*
+*      Copyright (c) 2018-2028, Chill Zhuang All rights reserved.
+*
+*  Redistribution and use in source and binary forms, with or without
+*  modification, are permitted provided that the following conditions are met:
+*
+*  Redistributions of source code must retain the above copyright notice,
+*  this list of conditions and the following disclaimer.
+*  Redistributions in binary form must reproduce the above copyright
+*  notice, this list of conditions and the following disclaimer in the
+*  documentation and/or other materials provided with the distribution.
+*  Neither the name of the dreamlu.net developer nor the names of its
+*  contributors may be used to endorse or promote products derived from
+*  this software without specific prior written permission.
+*  Author: Chill 庄骞 (smallchill@163.com)
+*/
+package com.jiuzhang.zhihu.controller;
 
-    import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.jiuzhang.zhihu.common.api.R;
 import com.jiuzhang.zhihu.common.support.Condition;
 import com.jiuzhang.zhihu.common.support.Query;
@@ -35,16 +35,16 @@ import org.springframework.web.bind.annotation.RestController;
 
 import lombok.AllArgsConstructor;
 
-    /**
-     *  控制器
-     *
-     * @author 作者
-     * @since 2020-11-12
-     */
-    @RestController
-    @AllArgsConstructor
-    @RequestMapping("answers")
-    public class AnswerController {
+/**
+ * 控制器
+ *
+ * @author 作者
+ * @since 2020-11-12
+ */
+@RestController
+@AllArgsConstructor
+@RequestMapping("answers")
+public class AnswerController {
 
     private final IAnswerService answerService;
 
@@ -88,31 +88,31 @@ import lombok.AllArgsConstructor;
         return R.status(answerService.removeById(id));
     }
 
-
     /**
      * 详情
      */
-    //	@GetMapping("{id}")
-    //	public R<Answer> detail(Answer answer) {
-    //		Answer detail = answerService.getOne(Condition.getQueryWrapper(answer));
-    //		return R.data(detail);
-    //	}
+    // @GetMapping("{id}")
+    // public R<Answer> detail(Answer answer) {
+    // Answer detail = answerService.getOne(Condition.getQueryWrapper(answer));
+    // return R.data(detail);
+    // }
 
     /**
      * 自定义分页
      */
-    //	@GetMapping("page")
-    //	public R<IPage<AnswerVO>> page(AnswerVO answer, Query query) {
-    //		IPage<AnswerVO> pages = answerService.selectAnswerPage(Condition.getPage(query), answer);
-    //		return R.data(pages);
-    //	}
+    // @GetMapping("page")
+    // public R<IPage<AnswerVO>> page(AnswerVO answer, Query query) {
+    // IPage<AnswerVO> pages =
+    // answerService.selectAnswerPage(Condition.getPage(query), answer);
+    // return R.data(pages);
+    // }
 
     /**
      * 新增或修改
      */
-    //	@PostMapping("submit")
-    //	public R submit(@RequestBody Answer answer) {
-    //		return R.status(answerService.saveOrUpdate(answer));
-    //	}
+    // @PostMapping("submit")
+    // public R submit(@RequestBody Answer answer) {
+    // return R.status(answerService.saveOrUpdate(answer));
+    // }
 
-    }
+}

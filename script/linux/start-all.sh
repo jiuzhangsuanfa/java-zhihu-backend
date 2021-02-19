@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 docker network create zhihu
-script/start-elasticsearch.sh \
-& script/start-minio.sh \
-& script/start-mysql.sh \
-& script/start-redis.sh \
-& script/start-keycloak.sh
+script/linux/start-elasticsearch.sh \
+& script/linux/start-minio.sh \
+& script/linux/start-mysql.sh \
+& script/linux/start-redis.sh \
+& script/linux/start-keycloak.sh
