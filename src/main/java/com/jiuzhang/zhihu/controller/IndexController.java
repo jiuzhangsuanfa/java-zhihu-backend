@@ -44,6 +44,7 @@ public class IndexController {
 		return indexService.search(keyword);
 	}
 }
+
 //	/**
 //	 * 索引全部Question
 //	 */

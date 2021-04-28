@@ -91,8 +91,8 @@ public class CodeGenerator {
 //        strategy.setSuperControllerClass("BaseController");
         // 写于父类中的公共字段
         strategy.setSuperEntityColumns("id");
-//        strategy.setInclude("question", "answer", "vote_stats");
-        strategy.setInclude("rate");
+        strategy.setInclude("question", "answer", "vote_stats");
+//        strategy.setInclude("solution");
 //        strategy.setInclude(scanner("表名，多个英文逗号分割").split(","));
         strategy.setControllerMappingHyphenStyle(true);
         strategy.setTablePrefix(pc.getModuleName() + "_");

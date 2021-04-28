@@ -44,6 +44,7 @@ minio:
   secretKey: minioadmin #访问的秘钥
 
 # 认证服务
+#   admin /
 keycloak:
   auth-server-url: http://localhost:8080/auth
   realm: zhihu
@@ -59,6 +60,6 @@ keycloak:
       securityCollections:
         - name: jack
           patterns:
-#            - /questions/*
-#            - /answers/*
-#            - /votes/*
+            - /questions/*
+            - /answers/*
+            - /votes/*

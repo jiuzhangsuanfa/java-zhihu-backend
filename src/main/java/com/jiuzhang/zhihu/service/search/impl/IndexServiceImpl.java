@@ -18,6 +18,8 @@ import org.elasticsearch.index.query.MatchQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -26,6 +28,8 @@ import java.util.List;
 
 @Component
 public class IndexServiceImpl implements IndexService {
+
+    private Logger logger = LoggerFactory.getLogger(IndexServiceImpl.class);
 
     @Autowired
     RestHighLevelClient restHighLevelClient;
@@ -52,6 +56,8 @@ public class IndexServiceImpl implements IndexService {
 
         SearchResponse response;
         try {
+            logger.info("search request:" +request);
+
             response = restHighLevelClient.search(request, RequestOptions.DEFAULT);
             return response.getHits();
         } catch (IOException e) {
