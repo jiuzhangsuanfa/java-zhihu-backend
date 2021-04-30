@@ -9,7 +9,6 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableCaching
 @EnableScheduling
 @SpringBootApplication
-@MapperScan("com.jiuzhang.zhihu.mapper")
 public class ZhihuApplication {
 
 	public static void main(String[] args) {

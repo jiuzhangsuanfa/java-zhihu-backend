@@ -33,15 +33,15 @@ import lombok.AllArgsConstructor;
  */
 @AllArgsConstructor
 @RestController
-@RequestMapping("index")
+@RequestMapping("search")
 public class IndexController {
 
 	private final IndexService indexService;
 
 	/** 搜索Question */
-	@RequestMapping("search")
-	public SearchHits search(String keyword) {
-		return indexService.search(keyword);
+	@RequestMapping("")
+	public R<SearchHits> search(String keyword) {
+		return R.data(indexService.search(keyword));
 	}
 }
 

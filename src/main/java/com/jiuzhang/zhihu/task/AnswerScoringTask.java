@@ -41,7 +41,7 @@ public class AnswerScoringTask {
     private ScoreAlgorithmStrategy scoreAlgorithm;
 
 
-    @Scheduled(cron="*/10 * * * * ?")
+//    @Scheduled(cron="*/10 * * * * ?")
     public void execute() {
 
         int count = 0;
