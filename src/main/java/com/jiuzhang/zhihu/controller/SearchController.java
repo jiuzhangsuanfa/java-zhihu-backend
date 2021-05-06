@@ -34,7 +34,7 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 @RestController
 @RequestMapping("search")
-public class IndexController {
+public class SearchController {
 
 	private final IndexService indexService;
 

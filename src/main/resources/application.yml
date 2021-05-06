@@ -46,22 +46,22 @@ minio:
 
 # 认证服务
 keycloak:
-#  auth-url: http://localhost:8080/auth
   auth-server-url: http://localhost:8080/auth
   realm: zhihu
-  resource: zhihu-oidc
+  resource: zhihu-backend
+  credentials:
+    secret: 7d544f9e-6a30-4612-a85d-75b44c9c9eb7
   principal-attribute: preferred_username
-  bearer-only: false
   use-resource-role-mappings: true
   cors: true
   public-client: true
   security-constraints:
     - authRoles:
-        - normal_user
+        - ROLE_CUSTOMER
       securityCollections:
-        - name: jack
+        - name: customer
           patterns:
 #            - /questions/*
-            - /answers/*
-            - /votes/*
-            - /search/*
+#            - /answers/*
+#            - /votes/*
+#            - /search/*
