@@ -18,6 +18,7 @@ package com.jiuzhang.zhihu.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.jiuzhang.zhihu.common.api.R;
+import com.jiuzhang.zhihu.common.api.ResultCode;
 import com.jiuzhang.zhihu.common.support.Condition;
 import com.jiuzhang.zhihu.common.support.Query;
 import com.jiuzhang.zhihu.entity.Answer;
@@ -55,6 +56,13 @@ public class AnswerController {
      */
     @GetMapping
     public R<IPage<Answer>> list(Answer answer, Query query) {
+        if (answer == null) {
+            return R.fail(ResultCode.PARAM_MISS.getCode(), "缺少查询参数");
+        }
+        if (answer.getQuestionId() == null) {
+            return R.fail(ResultCode.PARAM_MISS.getCode(), "缺少查询参数questionId");
+        }
+
         IPage<Answer> pages = answerService.page(Condition.getPage(query), Condition.getQueryWrapper(answer));
         return R.data(pages);
     }

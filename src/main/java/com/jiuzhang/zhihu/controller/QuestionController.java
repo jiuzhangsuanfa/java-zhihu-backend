@@ -19,12 +19,10 @@ package com.jiuzhang.zhihu.controller;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.jiuzhang.zhihu.common.api.R;
-import com.jiuzhang.zhihu.common.enums.OperationTypeEnum;
 import com.jiuzhang.zhihu.common.support.Condition;
 import com.jiuzhang.zhihu.common.support.Query;
 import com.jiuzhang.zhihu.entity.Question;
 import com.jiuzhang.zhihu.entity.event.QuestionAddedEvent;
-import com.jiuzhang.zhihu.entity.event.QuestionGenericEvent;
 import com.jiuzhang.zhihu.entity.event.QuestionRemovedEvent;
 import com.jiuzhang.zhihu.entity.event.QuestionUpdatedEvent;
 import com.jiuzhang.zhihu.entity.vo.QuestionVO;
@@ -43,6 +41,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.AllArgsConstructor;
+
+import java.util.List;
 
 /**
  *  控制器
@@ -78,6 +78,18 @@ public class QuestionController {
 		IPage<QuestionVO> pages = questionService.selectQuestionPage(Condition.getPage(query), question);
 		return R.data(pages);
 	}
+
+
+	/**
+	 * 问题列表分页
+	 * @return
+	 */
+//	@GetMapping
+//	public List<QuestionVO> page(QuestionVO question, Query query) {
+//		IPage<QuestionVO> pages = questionService.selectQuestionPage(Condition.getPage(query), question);
+//		return pages.getRecords();
+//	}
+
 
 	/**
 	 * 新增问题
